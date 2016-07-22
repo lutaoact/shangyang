@@ -1,0 +1,61 @@
+{
+  "name": "node-server",
+  "version": "0.0.1",
+  "description": "node server based on express + mongodb + redis",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "mocha test/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/lutaoact/node-server.git"
+  },
+  "keywords": [
+    "node",
+    "server",
+    "framework"
+  ],
+  "author": "Lu Tao",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/lutaoact/node-server#readme",
+  "dependencies": {
+    "async": "1.5.2",
+    "body-parser": "1.14.2",
+    "cheerio": "0.20.0",
+    "composable-middleware": "0.3.0",
+    "config": "1.19.0",
+    "cookie-parser": "1.4.1",
+    "cors": "2.7.1",
+    "csv": "0.4.6",
+    "express": "4.13.4",
+    "express-jwt": "3.3.0",
+    "file-stream-rotator": "0.0.6",
+    "glob": "7.0.5",
+    "gulp-run": "1.6.12",
+    "iconv": "2.1.11",
+    "iconv-lite": "0.4.13",
+    "jsonwebtoken": "5.7.0",
+    "lodash": "4.13.1",
+    "log4js": "0.6.31",
+    "moment": "2.11.1",
+    "mongoose": "4.5.2",
+    "morgan": "1.6.1",
+    "mssql": "3.2.1",
+    "nodemailer": "2.3.0",
+    "passport": "0.3.2",
+    "passport-local": "1.0.0",
+    "passport-weixin": "0.0.3",
+    "redis": "2.4.2",
+    "request": "2.69.0",
+    "superagent": "1.8.3",
+    "urllib": "2.9.1",
+    "utf8": "2.1.1"
+  },
+  "devDependencies": {
+    "gulp": "3.9.0",
+    "gulp-load-plugins": "1.2.0",
+    "gulp-nodemon": "2.0.6",
+    "mocha": "2.4.5"
+  }
+}
