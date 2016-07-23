@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "test": "mocha test/*",
-    "image": "node ./common/ImageComposer/index.js"
+    "image": "node ./common/ImageComposer/example.js"
   },
   "repository": {
     "type": "git",
