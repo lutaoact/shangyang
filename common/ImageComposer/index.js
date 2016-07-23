@@ -2,55 +2,68 @@
  * Module dependencies.
  */
 
-var Canvas = require('canvas')
-var canvas = new Canvas(150, 150)
-var ctx = canvas.getContext('2d')
-var fs = require('fs');
-var Image = Canvas.Image;
+'use strict';
 
-var outStream = fs.createWriteStream(__dirname + '/state2.png')
+const Canvas = require('canvas')
+const canvas = new Canvas(400, 720)
+const ctx = canvas.getContext('2d')
+const fs = require('fs');
+const Image = Canvas.Image;
+
+const outStream = fs.createWriteStream(__dirname + '/poster.png')
+
+let stream;
 
 
-ctx.fillRect(0,0,400,400);   // Draw a rectangle with default settings
+
+ctx.fillRect(0,0,400,720);   // Draw a rectangle with default settings
 ctx.save();                  // Save the default state
 
-ctx.fillStyle = '#09F'       // Make changes to the settings
-ctx.fillRect(15,15,120,120); // Draw a rectangle with new settings
+// ctx.fillStyle = '#09F'       // Make changes to the settings
+// ctx.fillRect(15,15,120,120); // Draw a rectangle with new settings
 
 
-var img = new Image;
+let img = new Image;
 img.dataMode = Image.MODE_IMAGE; // Only image data tracked
 img.dataMode = Image.MODE_MIME; // Only mime data tracked
 img.dataMode = Image.MODE_MIME | Image.MODE_IMAGE; // Both are tracked
 
-fs.readFile(__dirname + '/state.png', function(err, squid){
-  if (err) throw err;
-  img = new Image;
-  img.src = squid;
-  ctx.drawImage(img, 0, 0, img.width / 4, img.height / 4);
+fs.readFile(__dirname + '/old.jpg', function(err, origin) {
+  	if (err) throw err;
+  	img = new Image;
+  	img.src = origin;
+  	ctx.drawImage(img, 0, 0, 400, 720);
+
+	fs.readFile(__dirname + '/qrcode.jpg', function(err, origin) {
+	  	if (err) throw err;
+	  	img = new Image;
+	  	img.src = origin;
+	  	ctx.drawImage(img, 85, 530, 125, 125);
+
+		fs.readFile(__dirname + '/portrait.png', function(err, origin) {
+
+			img = new Image;
+		  	img.src = origin;
+
+		  	if (err) throw err;
+
+		  	ctx.beginPath();  
+		  	ctx.translate(0,0);  
+
+		    ctx.arc(270, 592.5, 50, 0, Math.PI * 2, true);  
+
+		    ctx.clip()
+
+		  	ctx.drawImage(img, 220, 542.5, 100, 100);
+
+		  	stream = canvas.createPNGStream();
+		  	stream.on('data', function(chunk){
+			  	outStream.write(chunk);
+		  	});
+		});
+	});
 });
 
-var img = new Image;
-img.src = canvas.toBuffer();
-ctx.drawImage(img, 0, 0, 50, 50);
-ctx.drawImage(img, 50, 0, 50, 50);
-ctx.drawImage(img, 100, 0, 50, 50);
 
 
-// ctx.save();                  // Save the current state
-// ctx.fillStyle = '#FFF'       // Make changes to the settings
-// ctx.globalAlpha = 0.5;    
-// ctx.fillRect(30,30,90,90);   // Draw a rectangle with new settings
 
-// ctx.restore();               // Restore previous state
-// ctx.fillRect(45,45,60,60);   // Draw a rectangle with restored settings
-
-// ctx.restore();               // Restore original state
-// ctx.fillRect(60,60,30,30);   // Draw a rectangle with restored settings
-
-
-var stream = canvas.createPNGStream();
-
-stream.on('data', function(chunk){
-  outStream.write(chunk);
-});
