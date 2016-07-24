@@ -60,6 +60,8 @@ app.use('/', require('./routes/'));
 app.use('/auth', require('./auth'));
 app.use('/users', require('./routes/user'));
 
+app.use('/weixin', require('./routes/weixin'));
+
 const util = require('util');
 app.use((err, req, res, next) => {
   let meta = '[' + new Date() + '] ' + req.url + '\n';
