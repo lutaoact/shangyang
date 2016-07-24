@@ -110,13 +110,15 @@ ImageComposer.prototype.ouput = function (output) {
 	return new Promise(function (resolve, reject) {
 		const outStream = fs.createWriteStream(output)
 		const stream = canvas.createPNGStream();
+					console.log(222)
+
 		stream.on('data', function(chunk){
 			outStream.write(chunk);
 			resolve();
 		});
 	});
 }
-ImageComposer.prototype.compose = function (opt) {
+ImageComposer.prototype.compose = function (opt, callback) {
 
 	if (opt) {
 		this.background.src = opt && opt.backgroundSrc || this.background.SRC;
@@ -129,6 +131,7 @@ ImageComposer.prototype.compose = function (opt) {
 		.then(() => this.drawQrcode(this.qrcode.src))
 		.then(() => this.drawPotrait(this.portrait.src))
 		.then(() => this.ouput(this.output.src))
+		.then(() => { callback && callback()})
 		.catch((err) => {
 			console.error('Error: ' + err);
 		})
