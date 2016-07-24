@@ -7,14 +7,11 @@ const auth = require('../auth/auth.service');
 const http = require('http');
 const responsePrototype = http.ServerResponse.prototype;
 responsePrototype.payload = function(payload) {
-  this.json({message: 'ok', timestamp: Date.now(), payload});
+//	this.json({message: 'ok', timestamp: Date.now(), payload});
 };
 
 router.all('/', (req, res, next) => {
-  res.page(10, {hello: 'girlfriend'});
+	res.end(req.query.echostr);
 });
-//router.all('/', auth.isAuthenticated(), (req, res, next) => {
-//  res.json({hello: 'girlfriend'});
-//});
 
 module.exports = router;
