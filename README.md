@@ -10,8 +10,8 @@ nvm alias default 4.4
 npm install -g gulp-cli #development
 npm install -g pm2 #production
 
-mongodb (3.2.4)
-redis (3.0.7)
+mongodb (3.2.8)
+redis (3.2.1)
 ```
 ### 升级node
 ```
@@ -39,10 +39,10 @@ logfile /data/log/redis26379.log
 dbfilename redis_dump26379.rdb
 dir /data/redis
 
-# 启用aof持久化
-appendonly yes
+# aof持久化，一般不用打开
+appendonly no
 appendfilename "appendonly26379.aof"
-appendfsync everysec
+appendfsync no
 
 # 慢日志
 slowlog-log-slower-than 100000
