@@ -7,6 +7,7 @@ let msg = {
   paramsMissing: '缺少参数',
   paramsLengthError: '参数长度错误',
 
+  valueErr: '值错误',
 };
 
 let AppErr = function(errcode, httpStatus, more) {

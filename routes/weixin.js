@@ -15,11 +15,12 @@ const querystring = require('querystring');
 const wechat = require('wechat');
 
 const ImageComposer = require('../common/ImageComposer/')
+const weixin = require('../common/weixin')
 const Promise = require('bluebird');
 
 const responsePrototype = http.ServerResponse.prototype;
 responsePrototype.payload = function(payload) {
-//	this.json({message: 'ok', timestamp: Date.now(), payload});
+//  this.json({message: 'ok', timestamp: Date.now(), payload});
 };
 
 const APPID = 'wx8b20d81c2353e8cd';
@@ -28,123 +29,107 @@ const BASEURL = '/cgi-bin/';
 const HOST = 'api.weixin.qq.com';
 
 const OPTIONS = {
-	hostname: HOST,
-	port: 443,
-	method: 'GET',
-	headers: {
-		// 'Content-Type': 'application/x-www-form-urlencoded'
-	}
+  hostname: HOST,
+  port: 443,
+  method: 'GET',
+  headers: {
+    // 'Content-Type': 'application/x-www-form-urlencoded'
+  }
 };
 
 const _request = (options) => {
 
-	console.log(options)
-	let data = '';
-	return new Promise((resolve, reject) => {
-		const req = https.request({
-			hostname: options && options.host || HOST,
-			port: 443,
-			method: options && options.method || 'GET',
-			path: options.path,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			}
-		}, (res) => {
-			res.setEncoding((options && options.encoding || 'utf-8'));
-			res.on('data', (chunk) => {
-				data += chunk;
-			});
-			res.on('end', () => {
-				if (options && options.responseType === 'BUFFER') {
-					resolve(data);
+  console.log(options)
+  let data = '';
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: options && options.host || HOST,
+      port: 443,
+      method: options && options.method || 'GET',
+      path: options.path,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }, (res) => {
+      res.setEncoding((options && options.encoding || 'utf-8'));
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+      res.on('end', () => {
+        if (options && options.responseType === 'BUFFER') {
+          resolve(data);
 
-				}
-				else {
-					resolve(JSON.parse(data));
-				}
-			});
-		});
+        }
+        else {
+          resolve(JSON.parse(data));
+        }
+      });
+    });
 
-		req.on('error', (e) => {
-		 	console.log(`problem with request: ${e.message}`);
-			reject(e);
-		});
+    req.on('error', (e) => {
+      console.log(`problem with request: ${e.message}`);
+      reject(e);
+    });
 
-		if (options && options.postData) {
-			req.end(JSON.stringify(options.postData));
-		}
-		req.end();
-	});
-};
-
-// TODO: 存入redis
-
-const _getAccessToken = () => {
-
-	return _request({path: '/cgi-bin/token?grant_type=client_credential&appid=' 
-					+ APPID + '&secret=' + APPSECRET});
+    if (options && options.postData) {
+      req.end(JSON.stringify(options.postData));
+    }
+    req.end();
+  });
 };
 
 router.get('/getToken', (req, res, next) => {
-
-	_getAccessToken().then((data) => res.end(data.access_token.toString()));
-
+  weixin.getAccessToken((err, token) => {
+    if (err) return next(err);
+    res.send(token);
+  });
 });
 
-
 router.get('/getQRCode', (req, res, next) => {
+  // https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKEN
+  weixin.getAccessToken((err, token) => {
+    if (err) return next(err);
+    _request({
+      path: '/cgi-bin/qrcode/create?access_token=' + token,
+      method: 'POST',
+      postData: {
+        expire_seconds: 604800,
+        action_name: 'QR_LIMIT_SCENE',
+        action_info: {scene: {scene_id: 123}}
+      }
+    }).then((data) => {
+      return _request({
+        path: '/cgi-bin/showqrcode?ticket=' + encodeURIComponent(data.ticket),
+        host: 'mp.weixin.qq.com',
+        responseType: 'BUFFER',
+        encoding: 'binary'
+      })
+    }).then((data) => {
+      return new Promise((resolve, reject) => {
+        const imageSrc = __dirname + '/1.png';
 
-	// https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKEN
-	_getAccessToken().then((data) => {
-
-		return _request({path: '/cgi-bin/qrcode/create?access_token=' + data.access_token, 
-			method: 'POST',
-			postData: {
-				expire_seconds: 604800, 
-				action_name: 'QR_LIMIT_SCENE', 
-				action_info: {
-					scene: {
-						scene_id: 123
-					}
-				}
-			}});
-	}).then((data) => {
-
-		return _request({
-			path: '/cgi-bin/showqrcode?ticket=' + encodeURIComponent(data.ticket),
-			host: 'mp.weixin.qq.com',
-			responseType: 'BUFFER',
-			encoding: 'binary'
-		})
-
-	}).then((data) => {
-		return new Promise((resolve, reject) => {
-			const imageSrc = __dirname + '/1.png';
-
-			fs.writeFile(imageSrc, data, 'binary', function (err) {
-				if (err) reject(err);
-				resolve(imageSrc);
-			});
-		});
-	}).then((imageSrc) => {
-
-		const imgComposer = new ImageComposer();
-
-		return new Promise((resolve, reject) => {
-			imgComposer.compose({
-				// backgroundSrc: __dirname + '/background.jpg', 
-				// qrcodeSrc: __dirname + '/qrcode.jpg',
-				qrcodeSrc: imageSrc,
-				outputPath: __dirname + '/outputName.png'
-			}, function (err) {
-				if (err) reject(err);
-				resolve();
-			});
-		})
-	}).then(() => {
-		res.end('success')
-	});
-	
+        fs.writeFile(imageSrc, data, 'binary', function (err) {
+          if (err) reject(err);
+          resolve(imageSrc);
+        });
+      });
+    }).then((imageSrc) => {
+      const imgComposer = new ImageComposer();
+      return new Promise((resolve, reject) => {
+        imgComposer.compose({
+          // backgroundSrc: __dirname + '/background.jpg',
+          // qrcodeSrc: __dirname + '/qrcode.jpg',
+          qrcodeSrc: imageSrc,
+          outputPath: __dirname + '/outputName.png'
+        }, function (err) {
+          if (err) reject(err);
+          resolve();
+        });
+      })
+    }).then(() => {
+      res.end('success');//只处理了成功的状态，没有处理错误
+    });
+  });
 });
 
 var config = {
@@ -156,13 +141,13 @@ var config = {
 
 router.get('/', wechat(config, (req, res, next) => {
 
-	// 用于微信接口验证
-	if (req.query && req.query.echostr) {
-		res.end(req.query.echostr);
-	}
+  // 用于微信接口验证
+  if (req.query && req.query.echostr) {
+    res.end(req.query.echostr);
+  }
 
-	// 微信输入信息都在req.weixin上
-	var message = req.weixin;
+  // 微信输入信息都在req.weixin上
+  var message = req.weixin;
     res.reply('hehe');
 }));
 
