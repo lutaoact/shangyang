@@ -93,7 +93,7 @@ router.get('/getQRCode', (req, res, next) => {
       path: '/cgi-bin/qrcode/create?access_token=' + token,
       method: 'POST',
       postData: {
-        expire_seconds: 604800,
+        expire_seconds: 604800,//永久二维码不需要设置过期时间
         action_name: 'QR_LIMIT_SCENE',
         action_info: {scene: {scene_id: 123}}
       }
