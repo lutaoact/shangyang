@@ -59,33 +59,6 @@ exports.mySeries = (tasks, callback) => {
   async.auto(tasks, callback);
 };
 
-exports.isProduction = process.env.NODE_ENV === 'production';
-exports.bulkSize = process.env.NODE_ENV === 'production' ? 1000 : 10;
-
-exports.initNextId = () => {
-  return moment().format('YYYY_MM_DD') + '0';
-};
-
-//baseDate: YYYYMMDD
-//fromRight: reverse the order
-exports.buildDateSeq = (baseDate, count, fromRight) => {
-  let rangeFunc = _[ `range${fromRight ? '' : 'Right'}` ];
-  return _.map(rangeFunc(count), (n) => {
-    return moment(baseDate, 'YYYYMMDD').subtract(n, 'd').format('YYYYMMDD');
-  });
-};
-
-exports.getPrefixForStkCode = (code) => {
-  return /^6/.test(code) ? 'SH' : 'SZ';
-};
-
-exports.getValidAt = (originalValidAt, days) => {
-  if (!originalValidAt || +originalValidAt < +new Date()) {
-    return moment().add(days, 'd');
-  }
-  return moment(originalValidAt).add(days, 'd');
-};
-
 function genCode(type, count) {
   let out = "";
   for (let i= 0; i < count; i++) {
