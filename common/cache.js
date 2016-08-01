@@ -2,8 +2,9 @@
 
 const _ = require('lodash');
 const async = require('async');
-const redisdb = require('./redis');
 
+const AppErr = require('./AppErr');
+const redisdb = require('./redis');
 const dataRedis = redisdb.data;
 
 exports.get = (key, cacheMissCallback, cb) => {
@@ -13,7 +14,7 @@ exports.get = (key, cacheMissCallback, cb) => {
 
     cacheMissCallback((err, data) => {
       if (err) return cb(err);
-      if (!data) return cb(new AppErr('valueErr', null, {key, expire, data}));
+      if (!data) return cb(new AppErr('valueErr', null, {key, data}));
 
       dataRedis.set(key, data, 'ex', 7000, (err) => {
         if (err) return cb(err);

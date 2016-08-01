@@ -5,8 +5,10 @@ const request = require('request');
 
 const cache = require('./cache');
 
-const APPID = 'wx8b20d81c2353e8cd';
-const APPSECRET = 'c89b14a7745377a910a1ad6df4924cfa';
+const APPID     = process.env.APPID;
+const APPSECRET = process.env.APPSECRET;
+console.log(process.env.APPSECRET);
+console.log(APPID, APPSECRET);
 
 const API_BASE = 'https://api.weixin.qq.com/cgi-bin';
 const MP_BASE = 'https://mp.weixin.qq.com/cgi-bin';

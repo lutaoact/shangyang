@@ -11,8 +11,7 @@ let schema = new Schema({
     required: true,
   },
   invitee: {//被邀请者
-    $type: ObjectId,
-    ref: 'user',
+    $type: String,
     required: true,
   }
 }, {collection: 'invitation', timestamps: true, typeKey: '$type'});

@@ -6,12 +6,14 @@ const ObjectId = Schema.Types.ObjectId;
 require('../common/connectMongo');
 const _u = require('../common/util');
 
-//手机号和微信unionid都可能为空，但都唯一，都应该建立唯一索引
 let schema = new Schema({
   openid: {
     $type: String,
     unique: true,
     required: true,
+  },
+  disabled: {
+    $type: Boolean,
   },
 }, {collection: 'user', timestamps: true, typeKey: '$type'});
 
