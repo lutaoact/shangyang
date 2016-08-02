@@ -3,6 +3,8 @@
 const fs = require('fs');
 const request = require('request');
 
+const ImageComposer = require('../common/ImageComposer/')
+
 const cache = require('./cache');
 
 const APPID     = process.env.APPID;
@@ -28,12 +30,12 @@ function getAccessToken(cb) {
 exports.getAccessToken = getAccessToken;
 
 // POST https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKEN
-function createQrcode(accessToken, cb) {
+function createQrcode(accessToken, openid, cb) {
   let options = {
     url: createQrcodeUrl, qs: {access_token: accessToken}, json: true,
     body: {
-      action_name: 'QR_LIMIT_SCENE',
-      action_info: {scene: {scene_id: 123}},
+      action_name: 'QR_LIMIT_STR_SCENE',
+      action_info: {scene: {scene_str: openid}},
     },
   };
   request.post(options, (err, response, resBody) => {
@@ -44,10 +46,10 @@ function createQrcode(accessToken, cb) {
 exports.createQrcode = createQrcode;
 
 // GET https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=TICKET
-function showQrcode(ticket, cb) {
+function showQrcode(ticket, openid, cb) {
   let url = `${showQrcodeUrl}?ticket=${encodeURIComponent(ticket)}`;
   console.log(url);
-  let imageSrc = './static/2.png';
+  let imageSrc = `./static/${openid}.png`;
   let stream = request(url)
     .on('error', (err) => {
       cb(err);
@@ -76,3 +78,33 @@ function uploadImg(accessToken, imgPath, cb) {
   });
 }
 exports.uploadImg = uploadImg;
+
+function generateQrCodeForOneUser(openid, cb) {
+  _u.mySeries({
+    token: (_cb) => {
+      weixin.getAccessToken(_cb);
+    },
+    qrcode: (_cb, ret) => {
+      weixin.createQrcode(ret.token, openid, _cb);
+    },
+    qrcodePngPath: (_cb, ret) => {
+      weixin.showQrcode(ret.qrcode.ticket, openid, _cb);
+    },
+    composePath: (_cb, ret) => {
+      const imgComposer = new ImageComposer();
+      imgComposer.compose({
+        qrcodeSrc: ret.qrcodePngPath, outputPath: './static/outputName2.png'
+      }, _cb);
+    },
+    upload: (_cb, ret) => {
+      weixin.uploadImg(ret.token, ret.composePath, _cb);
+    }
+  }, (err, ret) => {
+    if (err) return cb(err);
+    cb(null, {
+      ticket: ret.qrcode.ticket,
+      mediaId: ret.upload.media_id,
+      url: ret.upload.url,
+    });
+  });
+}

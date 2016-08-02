@@ -68,13 +68,25 @@ const wechatConfig = {
   appid: process.env.APPID,
   encodingAESKey: 'wmYBjHcEYQmRC0aPMJ556u5oAdpYD5NIlPMijX72hKY'
 };
+
+const userService = _u.service('user');
+
 app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
   let message = req.weixin;
   console.log(message);
-  res.reply({
-    type: "image",
-    content: {mediaId: 'tiHx0iQpjT8pQvX6QhOEF343pSecsXKeBRFmdGGyUfM'}
-  });
+
+  if (message.Event === 'subscribe') {
+    let openid = message.FromUserName;
+    if (message.EventKey === '') {
+      weixin.generate
+      return res.reply({
+        type: "image",
+        content: {mediaId: 'tiHx0iQpjT8pQvX6QhOEF343pSecsXKeBRFmdGGyUfM'}
+      });
+    }
+  } else {
+    res.reply('欢迎再次回来');
+  }
 }));
 
 const util = require('util');
