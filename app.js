@@ -71,7 +71,10 @@ const wechatConfig = {
 app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
   let message = req.weixin;
   console.log(message);
-  res.reply('hehe');
+  res.reply({
+    type: "image",
+    content: {mediaId: 'tiHx0iQpjT8pQvX6QhOEF343pSecsXKeBRFmdGGyUfM'}
+  });
 }));
 
 const util = require('util');

@@ -13,13 +13,11 @@ const MP_BASE = 'https://mp.weixin.qq.com/cgi-bin';
 const tokenUrl = `${API_BASE}/token`;
 const createQrcodeUrl = `${API_BASE}/qrcode/create`;
 const showQrcodeUrl = `${MP_BASE}/showqrcode`;
+const addMaterialUrl = `${API_BASE}/material/add_material`;
 
 // GET https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
 function getAccessToken(cb) {
-  let qs = {
-    grant_type: 'client_credential',
-    appid: APPID, secret: APPSECRET
-  };
+  let qs = {grant_type: 'client_credential', appid: APPID, secret: APPSECRET};
   cache.get('weixinAccessToken', (_cb) => {
     request.get({url: tokenUrl, qs, json: true,}, (err, response, resBody) => {
       if (err) return _cb(err);
@@ -49,7 +47,7 @@ exports.createQrcode = createQrcode;
 function showQrcode(ticket, cb) {
   let url = `${showQrcodeUrl}?ticket=${encodeURIComponent(ticket)}`;
   console.log(url);
-  let imageSrc = './routes/2.png';
+  let imageSrc = './static/2.png';
   let stream = request(url)
     .on('error', (err) => {
       cb(err);
@@ -65,3 +63,16 @@ function showQrcode(ticket, cb) {
   });
 }
 exports.showQrcode = showQrcode;
+
+// POST https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=ACCESS_TOKEN
+function uploadImg(accessToken, imgPath, cb) {
+  let options = {
+    url: addMaterialUrl, qs: {access_token: accessToken}, json: true,
+    formData: { type: 'image', media: fs.createReadStream(imgPath) },
+  };
+  request.post(options, (err, response, resBody) => {
+    if (err) return cb(err);
+    cb(null, resBody);//{"media_id":"xxxx","url":"yyyy"}
+  });
+}
+exports.uploadImg = uploadImg;

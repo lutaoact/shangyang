@@ -32,7 +32,7 @@ router.get('/getQRCode', (req, res, next) => {
     compose: (_cb, ret) => {
       const imgComposer = new ImageComposer();
       imgComposer.compose({
-        qrcodeSrc: ret.qrcodePngPath, outputPath: './routes/outputName2.png'
+        qrcodeSrc: ret.qrcodePngPath, outputPath: './static/outputName2.png'
       }, _cb);
     },
   }, (err, ret) => {
