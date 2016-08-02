@@ -72,7 +72,7 @@ ImageComposer.prototype.drawQrcode = function (src) {
 
 		});
 	});
-}
+};
 
 ImageComposer.prototype.drawPotrait = function (src) {
 	return new Promise((resolve, reject) => {
@@ -104,7 +104,7 @@ ImageComposer.prototype.drawPotrait = function (src) {
 		});
 
 	});
-}
+};
 
 ImageComposer.prototype.ouput = function (output) {
 	return new Promise(function (resolve, reject) {
@@ -117,7 +117,7 @@ ImageComposer.prototype.ouput = function (output) {
 			resolve();
 		});
 	});
-}
+};
 ImageComposer.prototype.compose = function (opt, callback) {
 
 	if (opt) {
@@ -131,13 +131,11 @@ ImageComposer.prototype.compose = function (opt, callback) {
 		.then(() => this.drawQrcode(this.qrcode.src))
 		.then(() => this.drawPotrait(this.portrait.src))
 		.then(() => this.ouput(this.output.src))
-		.then(() => { callback && callback()})
+		.then(() => { callback && callback(null, this.output.src)})
 		.catch((err) => {
-			console.error('Error: ' + err);
+      console.error('Error: ' + err);
+      callback && callback(err);
 		})
-
-}
-
+};
 
 module.exports = ImageComposer;
-
