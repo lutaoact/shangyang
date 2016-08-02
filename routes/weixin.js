@@ -10,7 +10,6 @@ const _u = require('../common/util');
 const ImageComposer = require('../common/ImageComposer/')
 const weixin = require('../common/weixin')
 
-const APPID     = process.env.APPID;
 
 router.get('/getToken', (req, res, next) => {
   weixin.getAccessToken((err, token) => {
@@ -41,23 +40,5 @@ router.get('/getQRCode', (req, res, next) => {
     res.payload();
   });
 });
-
-const config = {
-  token: 'weixin',
-  appid: APPID,
-  encodingAESKey: 'wmYBjHcEYQmRC0aPMJ556u5oAdpYD5NIlPMijX72hKY'
-};
-
-router.get('/', wechat(config, (req, res, next) => {
-
-  // 用于微信接口验证
-  if (req.query && req.query.echostr) {
-    res.end(req.query.echostr);
-  }
-
-  // 微信输入信息都在req.weixin上
-  var message = req.weixin;
-    res.reply('hehe');
-}));
 
 module.exports = router;

@@ -1,7 +1,7 @@
 'use strict';
 let moment = require('moment');
 
-const APP = 'gpws';
+const APP = 'app';
 
 module.exports = {
   appName: APP,

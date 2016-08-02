@@ -3,6 +3,7 @@
 const express = require('express');
 const cors = require('cors');
 const config = require('config');
+const wechat = require('wechat');
 const morgan = require('morgan');
 const fs = require('fs');
 const bodyParser = require('body-parser');
@@ -61,6 +62,17 @@ app.use('/auth', require('./auth'));
 app.use('/users', require('./routes/user'));
 
 app.use('/weixin', require('./routes/weixin'));
+
+const wechatConfig = {
+  token: 'weixin',
+  appid: process.env.APPID,
+  encodingAESKey: 'wmYBjHcEYQmRC0aPMJ556u5oAdpYD5NIlPMijX72hKY'
+};
+app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
+  let message = req.weixin;
+  console.log(message);
+  res.reply('hehe');
+}));
 
 const util = require('util');
 app.use((err, req, res, next) => {
