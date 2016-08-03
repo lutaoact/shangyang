@@ -12,6 +12,7 @@ const FileStreamRotator = require('file-stream-rotator');
 
 const _u = require('./common/util');
 const logger = _u.logger;
+const loggerD = _u.loggerD;
 const AppErr = require('./common/AppErr');
 
 console.log(config);
@@ -70,23 +71,38 @@ const wechatConfig = {
 };
 
 const userService = _u.service('user');
+const Message = _u.model('Message');
 
 app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
   let message = req.weixin;
-  console.log(message);
+  Message.create({content: message}, console.log);//所有的消息都存一份，备用
 
-  if (message.Event === 'subscribe') {
-    let openid = message.FromUserName;
-    if (message.EventKey === '') {
-      weixin.generate
-      return res.reply({
-        type: "image",
-        content: {mediaId: 'tiHx0iQpjT8pQvX6QhOEF343pSecsXKeBRFmdGGyUfM'}
-      });
-    }
-  } else {
-    res.reply('欢迎再次回来');
+  if (message.Event !== 'subscribe') {
+    return res.reply('欢迎再次回来');
   }
+
+  let openid = message.FromUserName;
+  _u.mySeries({
+    user: (_cb) => {
+      userService.processSubscribe(openid, _cb);
+    },
+    invitation: (_cb, ret) => {
+      //如果不是被人邀请进来的，那啥都不用做
+      if (message.EventKey === '') return _cb();
+
+      //如果不是新用户，似乎没啥好说的，啥都不做了吧
+      if (!ret.user.isNewCreated) return _cb();
+
+      let inviter = message.EventKey.replace(/^qrscene_/, '');
+      if (inviter === openid) return _cb();//自己扫自己
+
+      loggerD.write('invitation', inviter, openid);
+      userService.processInvitation(inviter, openid, _cb);
+    },
+  }, (err, ret) => {
+    if (err) logger.error(err);
+    res.reply({type: "image", content: {mediaId: ret.user.mediaId}});
+  });
 }));
 
 const util = require('util');

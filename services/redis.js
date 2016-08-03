@@ -12,4 +12,10 @@ const redisdb = require('../common/redis');
 const dataRedis = redisdb.data;
 
 const redisKey = {
+  inviter: (inviter) => { return `i:${inviter}`; },
+};
+
+exports.saddInvitee = (inviter, invitee, cb) => {
+  let key = redisKey.inviter(inviter);
+  dataRedis.sadd(key, invitee, cb);
 };

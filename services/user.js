@@ -9,6 +9,19 @@ const logger = _u.logger;
 const weixin = require('../common/weixin');
 
 const User = _u.model('User');
+const Invitation = _u.model('Invitation');
+const redisService = _u.service('redis');
+
+exports.processInvitation = (inviter, openid, cb) => {
+  _u.mySeries({
+    invitation: (_cb) => {
+      Invitation.create({inviter, invitee: openid}, _cb);
+    },
+    saveToRedis: (_cb) => {
+      redisService.saddInvitee(inviter, openid, _cb);
+    },
+  }, cb);
+};
 
 exports.processSubscribe = (openid, cb) => {
   _u.mySeries({
@@ -27,14 +40,15 @@ exports.processSubscribe = (openid, cb) => {
         _cb(null, user);
       });
     },
-    userWithMediaId: (_cb, ret) => {
+    mediaId: (_cb, ret) => {
       //如果已经生成过二维码，无需重新生成，直接返回
-      if (ret.user.mediaId) return _cb(null, ret.user);
+      if (ret.user.mediaId) return _cb(null, ret.user.mediaId);
 
       updateMediaIdForUser(openid, _cb);
     },
   }, (err, ret) => {
-    cb(err, ret.userWithMediaId);
+    ret.user.mediaId = ret.mediaId
+    cb(err, ret.user);
   });
 };
 
@@ -43,11 +57,11 @@ function updateMediaIdForUser(openid, cb) {
     weixin: (_cb) => {
       weixin.generateQrCodeForOneUser(openid, _cb);
     },
-    updatedUser: (_cb, ret) => {//返回更新后的doc
-      User.findOneAndUpdate({openid}, ret.weixin, {new: true}, _cb);
+    update: (_cb, ret) => {//返回更新后的doc
+      User.update({openid}, ret.weixin, _cb);
     },
   }, (err, ret) => {
     if (err) return cb(err);
-    cb(null, ret.updatedUser);
+    cb(null, ret.weixin.mediaId);
   });
 }
