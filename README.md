@@ -54,7 +54,6 @@ slowlog-max-len 65536
 ```
 ### 目录结构
 ```
-├── .mssql.json #为mssql命令行使用的配置文件
 ├── README.md
 ├── RELEASE.md #重大发布的发布日志
 ├── app.js #http服务器入口
@@ -65,7 +64,6 @@ slowlog-max-len 65536
 ├── controllers
 ├── gulpfile.js #gulp serve自动重启服务器
 ├── models #model设计
-├── netServer.js #socket服务器入口，用于umeng推送
 ├── package.json
 ├── routes #路由表
 ├── scripts #脚本
