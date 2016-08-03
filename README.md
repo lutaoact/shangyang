@@ -23,25 +23,29 @@ nvm reinstall-packages <old_version>
 
 ### 修改配置启动新实例
 ```
+# redis启动：
+redis-server 6666.conf
+```
+```
 # 以下列出的配置项都需认真检查核对，并根据自己的情况修改，其它未列出的配置可根据需要自行调整
 daemonize yes
-pidfile /data/tmp/redis_26379.pid
-port 26379
-bind 10.117.199.79 127.0.0.1
+pidfile /data/tmp/redis_6666.pid
+port 6666
+bind 127.0.0.1
 
 # 空闲超时自动关闭
 timeout 3600
 
 # 日志文件
-logfile /data/log/redis26379.log
+logfile /data/log/redis6666.log
 
 # rdb持久化
-dbfilename redis_dump26379.rdb
+dbfilename dump6666.rdb
 dir /data/redis
 
 # aof持久化，一般不用打开
 appendonly no
-appendfilename "appendonly26379.aof"
+appendfilename "appendonly6666.aof"
 appendfsync no
 
 # 慢日志
