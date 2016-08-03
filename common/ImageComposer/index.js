@@ -105,7 +105,6 @@ ImageComposer.prototype.ouput = function (output) {
   return new Promise(function (resolve, reject) {
     const outStream = fs.createWriteStream(output)
     const stream = canvas.createPNGStream();
-          console.log(222)
 
     stream.on('data', function(chunk){
       outStream.write(chunk);

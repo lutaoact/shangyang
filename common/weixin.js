@@ -3,7 +3,8 @@
 const fs = require('fs');
 const request = require('request');
 
-const ImageComposer = require('../common/ImageComposer/')
+const ImageComposer = require('./ImageComposer/')
+const _u = require('./util')
 
 const cache = require('./cache');
 
@@ -82,22 +83,23 @@ exports.uploadImg = uploadImg;
 function generateQrCodeForOneUser(openid, cb) {
   _u.mySeries({
     token: (_cb) => {
-      weixin.getAccessToken(_cb);
+      getAccessToken(_cb);
     },
     qrcode: (_cb, ret) => {
-      weixin.createQrcode(ret.token, openid, _cb);
+      createQrcode(ret.token, openid, _cb);
     },
     qrcodePngPath: (_cb, ret) => {
-      weixin.showQrcode(ret.qrcode.ticket, openid, _cb);
+      showQrcode(ret.qrcode.ticket, openid, _cb);
     },
     composePath: (_cb, ret) => {
       const imgComposer = new ImageComposer();
       imgComposer.compose({
-        qrcodeSrc: ret.qrcodePngPath, outputPath: './static/outputName2.png'
+        qrcodeSrc: ret.qrcodePngPath,
+        outputPath: `./static/output_${openid}.png`
       }, _cb);
     },
     upload: (_cb, ret) => {
-      weixin.uploadImg(ret.token, ret.composePath, _cb);
+      uploadImg(ret.token, ret.composePath, _cb);
     }
   }, (err, ret) => {
     if (err) return cb(err);
@@ -108,3 +110,4 @@ function generateQrCodeForOneUser(openid, cb) {
     });
   });
 }
+exports.generateQrCodeForOneUser = generateQrCodeForOneUser;

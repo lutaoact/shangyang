@@ -9,7 +9,6 @@ const _u = require('../common/util');
 
 const weixin = require('../common/weixin')
 
-
 router.get('/getToken', (req, res, next) => {
   weixin.getAccessToken((err, token) => {
     if (err) return next(err);
@@ -19,9 +18,9 @@ router.get('/getToken', (req, res, next) => {
 
 router.get('/getQRCode', (req, res, next) => {
   let openid = 'oSB10w52vUxOabF1FAPB13uyne8g';
-  weixin.generateQrCodeForOneUser(openid, (doc) => {
+  weixin.generateQrCodeForOneUser(openid, (err, doc) => {
     if (err) return next(err);
-    res.payload();
+    res.payload(doc);
   });
 });
 
