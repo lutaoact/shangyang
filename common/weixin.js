@@ -17,18 +17,29 @@ const tokenUrl = `${API_BASE}/token`;
 const createQrcodeUrl = `${API_BASE}/qrcode/create`;
 const showQrcodeUrl = `${MP_BASE}/showqrcode`;
 const addMaterialUrl = `${API_BASE}/material/add_material`;
+const userInfoUrl = `${API_BASE}/user/info`;
 
 // GET https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
 function getAccessToken(cb) {
   let qs = {grant_type: 'client_credential', appid: APPID, secret: APPSECRET};
   cache.get('weixinAccessToken', (_cb) => {
-    request.get({url: tokenUrl, qs, json: true,}, (err, response, resBody) => {
+    request.get({url: tokenUrl, qs, json: true}, (err, response, resBody) => {
       if (err) return _cb(err);
       _cb(null, resBody.access_token);
     });
   }, cb);
 }
 exports.getAccessToken = getAccessToken;
+
+// GET https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+function getUserInfo(token, openid, cb) {
+  let qs = {access_token: token, openid, lang: 'zh_CN'};
+  request.get({url: userInfoUrl, qs, json: true}, (err, response, resBody) => {
+    if (err) return cb(err);
+    cb(null, resBody);
+  });
+}
+exports.getUserInfo = getUserInfo;
 
 // POST https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKEN
 function createQrcode(accessToken, openid, cb) {

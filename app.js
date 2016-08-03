@@ -81,6 +81,7 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
     return res.reply('欢迎再次回来');
   }
 
+  //暂时只处理subscribe事件，后续可以再丰富
   let openid = message.FromUserName;
   _u.mySeries({
     user: (_cb) => {

@@ -13,12 +13,14 @@ let message = { ToUserName: 'gh_690b6500ec3d',
   EventKey: 'qrscene_oSB10w52vUxOabF1FAPB13uyne8g',
   Ticket: 'gQE58DoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL3dUaHBCTnZtSy1OU0pjcjlYeFNNAAIEUxSfVwMEAAAAAA==' };
 
+let openid = 'oSB10w52vUxOabF1FAPB13uyne8g';
+let token = 'BYggHkXlwme-2ftk7tspnfylZgFRBQwphGlFqylfqL0KSIpxpIll_3646wekWKPCQ7BkpBAtPudS-f7wz5ObEUOiPc4ue4vO97uv4HrfYweNud8bsjSbJ5rpl4g7NxJqGFHfAGAJIK';
+weixin.getUserInfo(token, openid, console.log);
 //let inviter = message.EventKey.substr(message.EventKey.indexOf('_') + 1);
-let inviter = message.EventKey.replace(/^qrscene_/, '');
+//let inviter = message.EventKey.replace(/^qrscene_/, '');
 //userService.processInvitation(inviter, message.FromUserName, console.log);
 //redisService.saddInvitee(inviter, message.FromUserName, console.log);
 
-//let openid = 'oSB10w52vUxOabF1FAPB13uyne8g';
 //userService.processSubscribe(openid, console.log);
 
 //_u.mySeries({
