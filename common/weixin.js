@@ -18,7 +18,7 @@ const createQrcodeUrl = `${API_BASE}/qrcode/create`;
 const showQrcodeUrl = `${MP_BASE}/showqrcode`;
 const addMaterialUrl = `${API_BASE}/material/add_material`;
 const userInfoUrl = `${API_BASE}/user/info`;
-
+const templateMsgSendUrl = `${API_BASE}/message/template/send`
 // GET https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
 function getAccessToken(cb) {
   let qs = {grant_type: 'client_credential', appid: APPID, secret: APPSECRET};
@@ -108,6 +108,7 @@ function getHeadImg(url, openid, cb) {
     cb(null, imageSrc);
   });
 }
+
 function generateQrCodeForOneUser(openid, cb) {
   _u.mySeries({
     token: (_cb) => {
@@ -148,3 +149,42 @@ function generateQrCodeForOneUser(openid, cb) {
   });
 }
 exports.generateQrCodeForOneUser = generateQrCodeForOneUser;
+
+//POST: https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN
+function sendTemplateMessage(accessToken, openid, templateid, data, cb) {
+  let options = {
+    url: templateMsgSendUrl, qs: {access_token: accessToken}, json: true,
+    body: {
+      touser: openid,
+      template_id: 'vWYrDzXSmdfGc8P8xysaxfzVt6SuA316UgpNsMwPVqs',
+      data: {
+        name: '张宇航',
+        score: 10
+      }
+    },
+  };
+  request.post(options, (err, response, resBody) => {
+    if (err) return cb(err);
+    cb(null, resBody);
+  });
+}
+exports.sendTemplateMessage = sendTemplateMessage;
+
+function sendScoreMessage(openid, cb) {
+  _u.mySeries({
+    token: (_cb) => {
+      getAccessToken(_cb);
+    },
+    template: (_cb) => {
+      sendTemplateMessage(ret.token, openid, '', '', '', _cb);
+    }
+  }, (err, ret) => {
+    if (err) return cb(err);
+    cb(null, {
+      // ticket: ret.qrcode.ticket,
+      // mediaId: ret.upload.media_id,
+      // url: ret.upload.url,
+    });
+  });
+}
+exports.sendScoreMessage = sendScoreMessage;

@@ -12,6 +12,7 @@ const User = _u.model('User');
 const Invitation = _u.model('Invitation');
 const redisService = _u.service('redis');
 
+
 exports.processInvitation = (inviter, openid, cb) => {
   _u.mySeries({
     invitation: (_cb) => {
@@ -43,10 +44,15 @@ exports.processSubscribe = (openid, cb) => {
     mediaId: (_cb, ret) => {
       //如果已经生成过二维码，无需重新生成，直接返回
       // if (ret.user.mediaId) return _cb(null, ret.user.mediaId);
-
+      
       updateMediaIdForUser(openid, _cb);
     },
+    // 发送积分变动消息（模板消息）给当前用户及其邀请者（如果有的话）
+    score: (_cb, ret) => {
+      weixin.sendScoreMessage(openid, _cb);
+    }
   }, (err, ret) => {
+    console.log(ret)
     ret.user.mediaId = ret.mediaId
     cb(err, ret.user);
   });
