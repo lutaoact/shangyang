@@ -21,6 +21,10 @@ exports.processInvitation = (inviter, openid, cb) => {
     saveToRedis: (_cb) => {
       redisService.saddInvitee(inviter, openid, _cb);
     },
+    // 发送积分变动消息（模板消息）给当其邀请者
+    score: (_cb, ret) => {      
+      updateMediaIdForUser(inviter, _cb);
+    },
   }, cb);
 };
 
@@ -42,13 +46,10 @@ exports.processSubscribe = (openid, cb) => {
       });
     },
     mediaId: (_cb, ret) => {
-      //如果已经生成过二维码，无需重新生成，直接返回
-      // if (ret.user.mediaId) return _cb(null, ret.user.mediaId);
-      
+      //如果已经生成过二维码，无需重新生成，直接返回      
       updateMediaIdForUser(openid, _cb);
     },
-    // 发送积分变动消息（模板消息）给当前用户及其邀请者（如果有的话）
-
+    // 发送积分变动消息（模板消息）给当前用户
     score: (_cb, ret) => {
       setTimeout(function() {
         weixin.sendScoreMessage(openid);
@@ -56,7 +57,6 @@ exports.processSubscribe = (openid, cb) => {
       _cb();
     }
   }, (err, ret) => {
-    console.log(ret)
     ret.user.mediaId = ret.mediaId
     cb(err, ret.user);
   });
@@ -71,8 +71,6 @@ function updateMediaIdForUser(openid, cb) {
       User.update({openid}, ret.weixin, _cb);
     },
   }, (err, ret) => {
-    console.log(ret);
-    console.log('=====')
     if (err) return cb(err);
     cb(null, ret.weixin.mediaId);
   });

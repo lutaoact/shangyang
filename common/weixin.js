@@ -5,6 +5,8 @@ const request = require('request');
 
 const ImageComposer = require('./ImageComposer/')
 const _u = require('./util')
+const redisService = _u.service('redis');
+
 
 const cache = require('./cache');
 
@@ -22,6 +24,8 @@ const uploadMediaUrl = `${API_BASE}/media/upload`;
 // const addMaterialUrl = `${API_BASE}/material/add_material`;
 const userInfoUrl = `${API_BASE}/user/info`;
 const templateMsgSendUrl = `${API_BASE}/message/template/send`;
+
+const templateId = 'EMU7DdpXcA-msQkLLwp2R1oZINryZi-uJ9XwpDjvHkI';
 
 function invokeWithToken(myFunc) {
   return function() {
@@ -185,31 +189,23 @@ function generateQrCodeForOneUser(openid, cb) {
 exports.generateQrCodeForOneUser = generateQrCodeForOneUser;
 
 //POST: https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN
-function sendTemplateMessage(accessToken, openid, templateid, data, cb) {
+function sendTemplateMessage(accessToken, openid, data, cb) {
   let options = {
     url: templateMsgSendUrl, qs: {access_token: accessToken}, json: true,
     body: {
       touser: openid,
-      template_id: 'EMU7DdpXcA-msQkLLwp2R1oZINryZi-uJ9XwpDjvHkI',
-      data: {
-        name: {
-          value: '张宇航',
-          color: '#173177'
-        },
-        score: {
-          value: 10,
-          color: '#173177'
-        }
-      }
+      template_id: templateId,
+      data: data
     },
   };
   request.post(options, (err, response, resBody) => {
-    if (err) return cb(err);   
+    if (err) return cb(err);
+    cb();
   });
 }
 exports.sendTemplateMessage = sendTemplateMessage;
 
-function sendScoreMessage(openid, cb) {
+function sendScoreMessage(openid) {
   _u.mySeries({
     token: (_cb) => {
       getAccessToken(_cb);
@@ -217,19 +213,24 @@ function sendScoreMessage(openid, cb) {
     userInfo: (_cb, ret) => {
       getUserInfo(ret.token, openid, _cb);
     },
+    invitee: (_cb, ret) => {
+      redisService.getInvitees(openid, _cb);
+    },
     template: (_cb, ret) => {
-      sendTemplateMessage(ret.token, openid, '', {
+      console.log(ret)
+      sendTemplateMessage(ret.token, openid, {
         name: {
           value: ret.userInfo.nickname,
           color: '#173177'
         },
         score: {
-          value: 10,
+          value: 12,
           color: '#173177'
         }
       },  _cb);
     }
   }, (err, ret) => {
+    console.log(err, ret);
   });
 }
 exports.sendScoreMessage = sendScoreMessage;

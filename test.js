@@ -10,9 +10,25 @@ const redisService = _u.service('redis');
 let token = 'FABTt5KzeleYxnMjP8bdpRDGZKIwV-9oiNqxIuKLO09SYxGG_hpfE-oHPQblZI33GJ2eeM3TPROVTN_C28l8oigFvFIAlAxkd3UukDDu6HwMBRhAIAETJ';
 let openid = 'oSB10wzOr2wcSSjuzcCqbakzZKuo';
 let path = './1.png'
-weixin.uploadImg(token, path, function () {
+let msgBody = {
+    "touser": openid,
+    "msgtype":"image",
+    "image":
+    {
+      "media_id": '2-08LdGCmIvJ8qoumRWEb8XQcPZhkrXtO-dtC0HYvDjtKPJ1OcQBUUp15XX-9b7b'
+    }
+}
+
+userService.updateMediaIdForUser(openid, function () {
 	console.log(arguments)
 })
+// weixin.sendScoreMessage(openid);
+// weixin.sendCustomerMsg(msgBody, function () {
+// 	console.log(arguments)
+// })
+// weixin.uploadImg(token, path, function () {
+// 	console.log(arguments)
+// })
 // let message = { ToUserName: 'gh_690b6500ec3d',
 //   FromUserName: 'oSB10w52vUxOabF1FAPB13uyne8g',
 //   CreateTime: '1470127920',
