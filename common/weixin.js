@@ -23,6 +23,39 @@ const uploadMediaUrl = `${API_BASE}/media/upload`;
 const userInfoUrl = `${API_BASE}/user/info`;
 const templateMsgSendUrl = `${API_BASE}/message/template/send`;
 
+function invokeWithToken(myFunc) {
+  return function() {
+    let args = Array.prototype.slice.call(arguments, 0);
+    let cb = args.pop();
+
+    _u.mySeries({
+      token: (_cb) => {
+        getAccessToken(_cb);
+      },
+      result: (_cb, ret) => {
+        args.unshift(ret.token);
+        args.push(_cb);
+        myFunc.apply(null, args);
+      },
+    }, (err, ret) => {
+      cb(err, ret.result);
+    });
+  };
+}
+
+// POST https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=ACCESS_TOKEN
+// 文档 http://mp.weixin.qq.com/wiki/7/12a5a320ae96fecdf0e15cb06123de9f.html
+//调用时不用传递token参数，因为invokeWithToken实现了这部分的内部逻辑
+function sendCustomerMsg(token, msgBody, cb) {
+  let url = `https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=${token}`;
+  request.post({url, json: true, body: msgBody}, (err, response, resBody) => {
+    if (err) return _cb(err);
+    cb(null, resBody);
+  });
+}
+exports.sendCustomerMsg = invokeWithToken(sendCustomerMsg);
+//weixin.sendCustomerMsg(msgBody, console.log);
+
 // GET https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
 function getAccessToken(cb) {
   let qs = {grant_type: 'client_credential', appid: APPID, secret: APPSECRET};
