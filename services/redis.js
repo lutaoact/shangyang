@@ -21,5 +21,6 @@ exports.saddInvitee = (inviter, invitee, cb) => {
 };
 
 exports.getInvitees = (inviter, cb) => {
-  dataRedis.scard(inviter, cb);
+  let key = redisKey.inviter(inviter);
+  dataRedis.scard(key, cb);
 };
