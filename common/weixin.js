@@ -217,14 +217,13 @@ function sendScoreMessage(openid) {
       redisService.getInvitees(openid, _cb);
     },
     template: (_cb, ret) => {
-      console.log(ret)
       sendTemplateMessage(ret.token, openid, {
         name: {
           value: ret.userInfo.nickname,
           color: '#173177'
         },
         score: {
-          value: 12,
+          value: ret.invitee,
           color: '#173177'
         }
       },  _cb);
