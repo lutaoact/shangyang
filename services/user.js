@@ -15,16 +15,16 @@ const redisService = _u.service('redis');
 
 exports.processInvitation = (inviter, openid, cb) => {
   _u.mySeries({
-    invitation: (_cb) => {
-      Invitation.create({inviter, invitee: openid}, _cb);
-    },
-    saveToRedis: (_cb, ret) => {
-      redisService.saddInvitee(inviter, openid, _cb);
-    },
+    // invitation: (_cb) => {
+    //   Invitation.create({inviter, invitee: openid}, _cb);
+    // },
+    // saveToRedis: (_cb, ret) => {
+    //   redisService.saddInvitee(inviter, openid, _cb);
+    // },
     // 发送积分变动消息（模板消息）给当其邀请者
     score: (_cb, ret) => {
       console.log('----------------');  
-      weixin.sendScoreMessage(inviter);
+      weixin.sendScoreMessage(inviter, openid);
     },
   }, cb);
 };
@@ -53,7 +53,7 @@ exports.processSubscribe = (openid, cb) => {
     // 发送积分变动消息（模板消息）给当前用户
     score: (_cb, ret) => {
       setTimeout(function() {
-        weixin.sendScoreMessage(openid);
+        weixin.sendScoreMessage(openid, openid);
       }, 2000);
       _cb();
     }

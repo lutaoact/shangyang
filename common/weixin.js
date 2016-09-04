@@ -205,7 +205,7 @@ function sendTemplateMessage(accessToken, openid, data, cb) {
 }
 exports.sendTemplateMessage = sendTemplateMessage;
 
-function sendScoreMessage(openid) {
+function sendScoreMessage(openid, inviteeid) {
   _u.mySeries({
     token: (_cb) => {
       getAccessToken(_cb);
@@ -214,16 +214,19 @@ function sendScoreMessage(openid) {
       getUserInfo(ret.token, openid, _cb);
     },
     invitee: (_cb, ret) => {
-      redisService.getInvitees(openid, _cb);
+      getUserInfo(ret.token, openid, _cb);
+    },
+    inviteeScore: (_cb, ret) => {
+      redisService.getInvitees(inviteeid, _cb);
     },
     template: (_cb, ret) => {
       sendTemplateMessage(ret.token, openid, {
         name: {
-          value: ret.userInfo.nickname,
+          value: ret.userInfo.nickname + '邀请' + ret.invitee.nickname,
           color: '#173177'
         },
         score: {
-          value: ret.invitee,
+          value: ret.inviteeScore,
           color: '#173177'
         }
       },  _cb);
