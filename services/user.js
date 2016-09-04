@@ -48,15 +48,14 @@ exports.processSubscribe = (openid, cb) => {
       updateMediaIdForUser(openid, _cb);
     },
     // 发送积分变动消息（模板消息）给当前用户及其邀请者（如果有的话）
+/*
     score: (_cb, ret) => {
-      
       setTimeout(function() {
         weixin.sendScoreMessage(openid);
       }, 2000);
-
       _cb();
     }
-  }, (err, ret) => {
+ */ }, (err, ret) => {
     console.log(ret)
     ret.user.mediaId = ret.mediaId
     cb(err, ret.user);
@@ -69,6 +68,7 @@ function updateMediaIdForUser(openid, cb) {
       weixin.generateQrCodeForOneUser(openid, _cb);
     },
     update: (_cb, ret) => {//返回更新后的doc
+	console.log('1111')
       User.update({openid}, ret.weixin, _cb);
     },
   }, (err, ret) => {
