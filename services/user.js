@@ -42,7 +42,7 @@ exports.processSubscribe = (openid, cb) => {
     },
     mediaId: (_cb, ret) => {
       //如果已经生成过二维码，无需重新生成，直接返回
-      if (ret.user.mediaId) return _cb(null, ret.user.mediaId);
+      // if (ret.user.mediaId) return _cb(null, ret.user.mediaId);
 
       updateMediaIdForUser(openid, _cb);
     },
