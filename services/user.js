@@ -24,7 +24,7 @@ exports.processInvitation = (inviter, openid, cb) => {
     // 发送积分变动消息（模板消息）给当其邀请者
     score: (_cb, ret) => {
       console.log('----------------');  
-      updateMediaIdForUser(inviter, _cb);
+      weixin.sendScoreMessage(inviter);
     },
   }, cb);
 };
