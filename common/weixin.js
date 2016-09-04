@@ -176,7 +176,7 @@ function sendScoreMessage(openid, cb) {
       getAccessToken(_cb);
     },
     template: (_cb, ret) => {
-      sendTemplateMessage(ret.token, openid, '', '', '', _cb);
+      sendTemplateMessage(ret.token, openid, '', '', _cb);
     }
   }, (err, ret) => {
     if (err) return cb(err);
