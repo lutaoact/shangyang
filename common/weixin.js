@@ -160,11 +160,9 @@ function generateQrCodeForOneUser(openid, cb) {
       getUserInfo(ret.token, openid, _cb);
     },
     getHeadImg: (_cb, ret) => {
-      console.log(ret.userInfo.headimgurl);
       getHeadImg(ret.userInfo.headimgurl, openid, _cb);
     },
     composePath: (_cb, ret) => {
-      console.log(ret);
       const imgComposer = new ImageComposer();
       imgComposer.compose({
         qrcodeSrc: ret.qrcodePngPath,
@@ -207,11 +205,6 @@ function sendTemplateMessage(accessToken, openid, templateid, data, cb) {
   };
   request.post(options, (err, response, resBody) => {
     if (err) return cb(err);   
-    cb(null, {    
-      // ticket: ret.qrcode.ticket,   
-      // mediaId: ret.upload.media_id,    
-      // url: ret.upload.url,   
-    });
   });
 }
 exports.sendTemplateMessage = sendTemplateMessage;
@@ -221,8 +214,20 @@ function sendScoreMessage(openid, cb) {
     token: (_cb) => {
       getAccessToken(_cb);
     },
+    userInfo: (_cb, ret) => {
+      getUserInfo(ret.token, openid, _cb);
+    },
     template: (_cb, ret) => {
-      sendTemplateMessage(ret.token, openid, '', '',  _cb);
+      sendTemplateMessage(ret.token, openid, '', {
+        name: {
+          value: ret.userInfo.nickname,
+          color: '#173177'
+        },
+        score: {
+          value: 10,
+          color: '#173177'
+        }
+      },  _cb);
     }
   }, (err, ret) => {
   });
