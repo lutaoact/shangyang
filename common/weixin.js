@@ -156,7 +156,7 @@ function sendTemplateMessage(accessToken, openid, templateid, data, cb) {
     url: templateMsgSendUrl, qs: {access_token: accessToken}, json: true,
     body: {
       touser: openid,
-      template_id: 'vWYrDzXSmdfGc8P8xysaxfzVt6SuA316UgpNsMwPVqs',
+      template_id: 'EMU7DdpXcA-msQkLLwp2R1oZINryZi-uJ9XwpDjvHkI',
       data: {
         name: '张宇航',
         score: 10
@@ -176,7 +176,7 @@ function sendScoreMessage(openid, cb) {
       getAccessToken(_cb);
     },
     template: (_cb, ret) => {
-      sendTemplateMessage(ret.token, openid, '', '', _cb);
+      sendTemplateMessage(ret.token, openid, '', '',  _cb);
     }
   }, (err, ret) => {
     if (err) return cb(err);

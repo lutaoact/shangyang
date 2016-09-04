@@ -49,7 +49,12 @@ exports.processSubscribe = (openid, cb) => {
     },
     // 发送积分变动消息（模板消息）给当前用户及其邀请者（如果有的话）
     score: (_cb, ret) => {
-      weixin.sendScoreMessage(openid, _cb);
+      
+      setTimeout(function() {
+        weixin.sendScoreMessage(openid);
+      }, 2000);
+
+      _cb();
     }
   }, (err, ret) => {
     console.log(ret)
