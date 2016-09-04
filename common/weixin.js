@@ -88,6 +88,7 @@ function uploadImg(accessToken, imgPath, cb) {
   console.log(options)
   request.post(options, (err, response, resBody) => {
     console.log('===========');
+    console.log(arguments)
     if (err) return cb(err);
     cb(null, resBody);//{"media_id":"xxxx","url":"yyyy"}
   });
