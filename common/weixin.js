@@ -158,8 +158,14 @@ function sendTemplateMessage(accessToken, openid, templateid, data, cb) {
       touser: openid,
       template_id: 'EMU7DdpXcA-msQkLLwp2R1oZINryZi-uJ9XwpDjvHkI',
       data: {
-        name: '张宇航',
-        score: 10
+        name: {
+          value: '张宇航',
+          color: '#173177'
+        },
+        score: {
+          value: 10,
+          color: '#173177'
+        }
       }
     },
   };
@@ -170,7 +176,7 @@ function sendTemplateMessage(accessToken, openid, templateid, data, cb) {
 }
 exports.sendTemplateMessage = sendTemplateMessage;
 
-function sendScoreMessage(openid, cb) {
+function sendScoreMessage(openid) {
   _u.mySeries({
     token: (_cb) => {
       getAccessToken(_cb);
@@ -179,12 +185,6 @@ function sendScoreMessage(openid, cb) {
       sendTemplateMessage(ret.token, openid, '', '',  _cb);
     }
   }, (err, ret) => {
-    if (err) return cb(err);
-    cb(null, {
-      // ticket: ret.qrcode.ticket,
-      // mediaId: ret.upload.media_id,
-      // url: ret.upload.url,
-    });
   });
 }
 exports.sendScoreMessage = sendScoreMessage;
