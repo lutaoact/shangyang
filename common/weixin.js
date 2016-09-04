@@ -214,7 +214,7 @@ function sendScoreMessage(openid, inviteeid) {
       getUserInfo(ret.token, openid, _cb);
     },
     invitee: (_cb, ret) => {
-      getUserInfo(ret.token, openid, _cb);
+      getUserInfo(ret.token, inviteeid, _cb);
     },
     inviteeScore: (_cb, ret) => {
       redisService.getInvitees(inviteeid, _cb);

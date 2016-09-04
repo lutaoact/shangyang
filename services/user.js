@@ -51,12 +51,12 @@ exports.processSubscribe = (openid, cb) => {
       updateMediaIdForUser(openid, _cb);
     },
     // 发送积分变动消息（模板消息）给当前用户
-    score: (_cb, ret) => {
-      setTimeout(function() {
-        weixin.sendScoreMessage(openid, openid);
-      }, 2000);
-      _cb();
-    }
+    // score: (_cb, ret) => {
+    //   setTimeout(function() {
+    //     weixin.sendScoreMessage(openid, openid);
+    //   }, 2000);
+    //   _cb();
+    // }
   }, (err, ret) => {
     ret.user.mediaId = ret.mediaId
     cb(err, ret.user);
