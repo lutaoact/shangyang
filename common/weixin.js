@@ -91,6 +91,23 @@ function uploadImg(accessToken, imgPath, cb) {
 }
 exports.uploadImg = uploadImg;
 
+function getHeadImg(url, openid, cb) {
+  console.log(url);
+  let imageSrc = `./static/head_${openid}.png`;
+  let stream = request(url)
+    .on('error', (err) => {
+      cb(err);
+    })
+    .pipe(fs.createWriteStream(imageSrc))
+    .on('error', (err) => {
+      cb(err);
+    });
+
+  stream.on('finish', () => {
+    console.log(`finish download: ${imageSrc}`);
+    cb(null, imageSrc);
+  });
+}
 function generateQrCodeForOneUser(openid, cb) {
   _u.mySeries({
     token: (_cb) => {
@@ -102,10 +119,19 @@ function generateQrCodeForOneUser(openid, cb) {
     qrcodePngPath: (_cb, ret) => {
       showQrcode(ret.qrcode.ticket, openid, _cb);
     },
+    userInfo: (_cb, ret) => {
+      getUserInfo(ret.token, openid, _cb);
+    },
+    getHeadImg: (_cb, ret) => {
+      console.log(ret.userInfo.headimgurl);
+      getHeadImg(ret.userInfo.headimgurl, openid, _cb);
+    },
     composePath: (_cb, ret) => {
+      console.log(ret);
       const imgComposer = new ImageComposer();
       imgComposer.compose({
         qrcodeSrc: ret.qrcodePngPath,
+        portraitSrc: ret.getHeadImg,
         outputPath: `./static/output_${openid}.png`
       }, _cb);
     },

@@ -64,6 +64,7 @@ app.use('/users', require('./routes/user'));
 
 app.use('/weixin', require('./routes/weixin'));
 
+// process.env.APPID = 
 const wechatConfig = {
   token: 'weixin',
   appid: process.env.APPID,
