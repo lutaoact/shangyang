@@ -217,7 +217,7 @@ function sendScoreMessage(openid, inviteeid) {
       getUserInfo(ret.token, inviteeid, _cb);
     },
     inviteeScore: (_cb, ret) => {
-      redisService.getInvitees(inviteeid, _cb);
+      redisService.getInvitees(openid, _cb);
     },
     template: (_cb, ret) => {
       console.log('=====')
