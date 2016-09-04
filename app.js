@@ -94,7 +94,7 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
 
       //如果不是新用户，似乎没啥好说的，啥都不做了吧
       //
-      // if (!ret.user.isNewCreated) return _cb();
+      if (!ret.user.isNewCreated) return _cb();
 
       let inviter = message.EventKey.replace(/^qrscene_/, '');
       if (inviter === openid) return _cb();//自己扫自己
