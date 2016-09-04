@@ -71,6 +71,8 @@ function updateMediaIdForUser(openid, cb) {
       User.update({openid}, ret.weixin, _cb);
     },
   }, (err, ret) => {
+    console.log(ret);
+    console.log('=====')
     if (err) return cb(err);
     cb(null, ret.weixin.mediaId);
   });

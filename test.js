@@ -9,8 +9,8 @@ const redisService = _u.service('redis');
 
 let token = 'FABTt5KzeleYxnMjP8bdpRDGZKIwV-9oiNqxIuKLO09SYxGG_hpfE-oHPQblZI33GJ2eeM3TPROVTN_C28l8oigFvFIAlAxkd3UukDDu6HwMBRhAIAETJ';
 let openid = 'oSB10wzOr2wcSSjuzcCqbakzZKuo';
-
-userService.updateMediaIdForUser(openid, function () {
+let path = './1.png'
+weixin.uploadImg(token, path, function () {
 	console.log(arguments)
 })
 // let message = { ToUserName: 'gh_690b6500ec3d',

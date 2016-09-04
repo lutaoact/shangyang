@@ -16,7 +16,10 @@ const MP_BASE = 'https://mp.weixin.qq.com/cgi-bin';
 const tokenUrl = `${API_BASE}/token`;
 const createQrcodeUrl = `${API_BASE}/qrcode/create`;
 const showQrcodeUrl = `${MP_BASE}/showqrcode`;
-const addMaterialUrl = `${API_BASE}/material/add_material`;
+// 新增临时素材
+const uploadMediaUrl = `${API_BASE}/media/upload`;
+
+// const addMaterialUrl = `${API_BASE}/material/add_material`;
 const userInfoUrl = `${API_BASE}/user/info`;
 const templateMsgSendUrl = `${API_BASE}/message/template/send`;
 
@@ -61,7 +64,6 @@ exports.createQrcode = createQrcode;
 // GET https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=TICKET
 function showQrcode(ticket, openid, cb) {
   let url = `${showQrcodeUrl}?ticket=${encodeURIComponent(ticket)}`;
-  console.log(url);
   let imageSrc = `./static/${openid}.png`;
   let stream = request(url)
     .on('error', (err) => {
@@ -82,14 +84,10 @@ exports.showQrcode = showQrcode;
 // POST https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=ACCESS_TOKEN
 function uploadImg(accessToken, imgPath, cb) {
   let options = {
-    url: addMaterialUrl, qs: {access_token: accessToken}, json: true,
+    url: uploadMediaUrl, qs: {access_token: accessToken}, json: true,
     formData: { type: 'image', media: fs.createReadStream(imgPath) },
   };
-  console.log('--------uploadImg----------');
-  console.log(options)
   request.post(options, (err, response, resBody) => {
-    console.log('===========');
-    console.log(arguments)
     if (err) return cb(err);
     cb(null, resBody);//{"media_id":"xxxx","url":"yyyy"}
   });
