@@ -84,7 +84,10 @@ function uploadImg(accessToken, imgPath, cb) {
     url: addMaterialUrl, qs: {access_token: accessToken}, json: true,
     formData: { type: 'image', media: fs.createReadStream(imgPath) },
   };
+  console.log('--------uploadImg----------');
+  console.log(options)
   request.post(options, (err, response, resBody) => {
+    console.log('===========');
     if (err) return cb(err);
     cb(null, resBody);//{"media_id":"xxxx","url":"yyyy"}
   });
