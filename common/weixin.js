@@ -18,7 +18,8 @@ const createQrcodeUrl = `${API_BASE}/qrcode/create`;
 const showQrcodeUrl = `${MP_BASE}/showqrcode`;
 const addMaterialUrl = `${API_BASE}/material/add_material`;
 const userInfoUrl = `${API_BASE}/user/info`;
-const templateMsgSendUrl = `${API_BASE}/message/template/send`
+const templateMsgSendUrl = `${API_BASE}/message/template/send`;
+
 // GET https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
 function getAccessToken(cb) {
   let qs = {grant_type: 'client_credential', appid: APPID, secret: APPSECRET};
@@ -174,13 +175,17 @@ function sendTemplateMessage(accessToken, openid, templateid, data, cb) {
     },
   };
   request.post(options, (err, response, resBody) => {
-    if (err) return cb(err);
-    cb(null, resBody);
+    if (err) return cb(err);   
+    cb(null, {    
+      // ticket: ret.qrcode.ticket,   
+      // mediaId: ret.upload.media_id,    
+      // url: ret.upload.url,   
+    });
   });
 }
 exports.sendTemplateMessage = sendTemplateMessage;
 
-function sendScoreMessage(openid) {
+function sendScoreMessage(openid, cb) {
   _u.mySeries({
     token: (_cb) => {
       getAccessToken(_cb);
