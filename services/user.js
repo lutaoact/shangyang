@@ -89,13 +89,13 @@ function sendWelcomMsg(openid, cb) {
         msgtype: 'news',
         news: {
           articles: [{
-            title: 'Happy Day',
-            description: 'Is Really A Happy Day',
+            title: '课程介绍',
+            description: '课程介绍的描述',
             url: 'http://mp.weixin.qq.com/s?__biz=MzAwODE4Nzk2Ng==&tempkey=DtfGz%2F5m1gHUHll6Qr7RvUoW%2BqLgSnD3IVVSgY1vNfRRZl0VBBYfetjFaw1KqBzyWjJ60fgk9U0YL%2BM2rzfcR%2F%2BjhBgmTqoWcpcjzjf2%2FHOhnirfqr4d%2B%2FMeG%2BMwwVmlz8oJvnyk1WY83sI1gYHv2g%3D%3D&#rd',
             picurl: 'http://mmbiz.qpic.cn/mmbiz/hb0fNLLZtnNSzqJelT9KgPnybh1LFCClicyzYxEIER6fCllSq8ZZevkL1cUKpTqoVD9MbeEDdKe2c5z7ceshG9g/640?wx_fmt=jpeg&tp=webp&wxfrom=5'
           }, {
-            title: 'Happy Day',
-            description: 'Is Really A Happy Day',
+            title: '我是另一个课程的介绍',
+            description: '我是另一个课程介绍的描述',
             url: 'http://mp.weixin.qq.com/s?__biz=MzAwODE4Nzk2Ng==&tempkey=DtfGz%2F5m1gHUHll6Qr7RvUoW%2BqLgSnD3IVVSgY1vNfRRZl0VBBYfetjFaw1KqBzyWjJ60fgk9U0YL%2BM2rzfcR%2F%2BjhBgmTqoWcpcjzjf2%2FHOhnirfqr4d%2B%2FMeG%2BMwwVmlz8oJvnyk1WY83sI1gYHv2g%3D%3D&#rd',
             picurl: 'http://mmbiz.qpic.cn/mmbiz/hb0fNLLZtnNSzqJelT9KgPnybh1LFCClicyzYxEIER6fCllSq8ZZevkL1cUKpTqoVD9MbeEDdKe2c5z7ceshG9g/640?wx_fmt=jpeg&tp=webp&wxfrom=5'
           }]
