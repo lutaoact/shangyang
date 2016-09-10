@@ -7,21 +7,37 @@ const redisService = _u.service('redis');
 
 
 
-let token = 'hVgSdiiKqUjHQlZxtSr_cM4iDYILpaHZAV_Dhq4v267YRZZVPzbZlW-lFrh8cLZIM8BrZbGtnV5CLGcHBl_IhjGxPFT_FpLh3KjCULedWylGRTQ1id8AXB3cy5EpMt3UXLKgADACQP';
+let token = '55o7tv65xEzXxsG0JXnv9BRjYuRExMantdQIEwfCPI0VtFGid03MojC2IPyMKd-uAKxod6ZbZa3CrnhrZeFMq94tXi_SIW7H4aQXTx_j7TtvCbpB7aP2hNVy-aPzhVKnEQIeABANZR';
 let openid = 'oSB10wzOr2wcSSjuzcCqbakzZKuo';
 let path = './1.png'
 let msgBody = {
-    "touser": openid,
-    "msgtype": "text",
-    "text": {
-      "content":"Hello World"
-    }
-  };
+  touser: openid,
+  msgtype: 'news',
+  news: {
+    articles: [{
+      title: 'Happy Day',
+      description: 'Is Really A Happy Day',
+      url: 'http://mp.weixin.qq.com/s?__biz=MzAwODE4Nzk2Ng==&tempkey=DtfGz%2F5m1gHUHll6Qr7RvUoW%2BqLgSnD3IVVSgY1vNfRRZl0VBBYfetjFaw1KqBzyWjJ60fgk9U0YL%2BM2rzfcR%2F%2BjhBgmTqoWcpcjzjf2%2FHOhnirfqr4d%2B%2FMeG%2BMwwVmlz8oJvnyk1WY83sI1gYHv2g%3D%3D&#rd',
+      picurl: 'http://mmbiz.qpic.cn/mmbiz/hb0fNLLZtnNSzqJelT9KgPnybh1LFCClicyzYxEIER6fCllSq8ZZevkL1cUKpTqoVD9MbeEDdKe2c5z7ceshG9g/640?wx_fmt=jpeg&tp=webp&wxfrom=5'
+    }, {
+      title: 'Happy Day',
+      description: 'Is Really A Happy Day',
+      url: 'http://mp.weixin.qq.com/s?__biz=MzAwODE4Nzk2Ng==&tempkey=DtfGz%2F5m1gHUHll6Qr7RvUoW%2BqLgSnD3IVVSgY1vNfRRZl0VBBYfetjFaw1KqBzyWjJ60fgk9U0YL%2BM2rzfcR%2F%2BjhBgmTqoWcpcjzjf2%2FHOhnirfqr4d%2B%2FMeG%2BMwwVmlz8oJvnyk1WY83sI1gYHv2g%3D%3D&#rd',
+      picurl: 'http://mmbiz.qpic.cn/mmbiz/hb0fNLLZtnNSzqJelT9KgPnybh1LFCClicyzYxEIER6fCllSq8ZZevkL1cUKpTqoVD9MbeEDdKe2c5z7ceshG9g/640?wx_fmt=jpeg&tp=webp&wxfrom=5'
+    }]
+  }
+};
 
-// userService.updateMediaIdForUser(openid, function () {
-// 	console.log(arguments)
-// })
-// weixin.sendScoreMessage(openid);
+// let msgBody = {
+//     "touser": openid,
+//     "msgtype": "text",
+//     "text": {
+//       "content":"Hello World"
+//     }
+//   };
+
+weixin.sendScoreMessage(openid);
+
 // weixin.sendCustomerMsg(msgBody, function () {
 // 	console.log(arguments)
 // })
@@ -46,7 +62,7 @@ let msgBody = {
 //userService.processInvitation(inviter, message.FromUserName, console.log);
 //redisService.saddInvitee(inviter, message.FromUserName, console.log);
 
-userService.processSubscribe(openid, console.log);
+// userService.processSubscribe(openid, console.log);
 
 //_u.mySeries({
 //  token: (_cb) => {
