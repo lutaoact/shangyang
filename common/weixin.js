@@ -205,7 +205,7 @@ function sendTemplateMessage(accessToken, openid, data, cb) {
 }
 exports.sendTemplateMessage = sendTemplateMessage;
 
-function sendScoreMessage(openid, inviteeid) {
+function sendScoreMessage(openid, inviteeid, cb) {
   _u.mySeries({
     token: (_cb) => {
       getAccessToken(_cb);
@@ -233,7 +233,8 @@ function sendScoreMessage(openid, inviteeid) {
       },  _cb);
     }
   }, (err, ret) => {
-    console.log(err, ret);
+    if (err) return cb(err);
+    cb();
   });
 }
 exports.sendScoreMessage = sendScoreMessage;
