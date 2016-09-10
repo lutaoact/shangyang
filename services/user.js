@@ -47,31 +47,7 @@ exports.processSubscribe = (openid, cb) => {
     },
     // 生成课程介绍以及报名方式
     welcome: (_cb, ret) => {
-      weixin.sendCustomerMsg({
-        touser: openid,
-        msgtype: 'news',
-        news: {
-          articles: [{
-            title: 'Happy Day',
-            description: 'Is Really A Happy Day',
-            url: 'http://mp.weixin.qq.com/s?__biz=MzAwODE4Nzk2Ng==&tempkey=DtfGz%2F5m1gHUHll6Qr7RvUoW%2BqLgSnD3IVVSgY1vNfRRZl0VBBYfetjFaw1KqBzyWjJ60fgk9U0YL%2BM2rzfcR%2F%2BjhBgmTqoWcpcjzjf2%2FHOhnirfqr4d%2B%2FMeG%2BMwwVmlz8oJvnyk1WY83sI1gYHv2g%3D%3D&#rd',
-            picurl: 'http://mmbiz.qpic.cn/mmbiz/hb0fNLLZtnNSzqJelT9KgPnybh1LFCClicyzYxEIER6fCllSq8ZZevkL1cUKpTqoVD9MbeEDdKe2c5z7ceshG9g/640?wx_fmt=jpeg&tp=webp&wxfrom=5'
-          }, {
-            title: 'Happy Day',
-            description: 'Is Really A Happy Day',
-            url: 'http://mp.weixin.qq.com/s?__biz=MzAwODE4Nzk2Ng==&tempkey=DtfGz%2F5m1gHUHll6Qr7RvUoW%2BqLgSnD3IVVSgY1vNfRRZl0VBBYfetjFaw1KqBzyWjJ60fgk9U0YL%2BM2rzfcR%2F%2BjhBgmTqoWcpcjzjf2%2FHOhnirfqr4d%2B%2FMeG%2BMwwVmlz8oJvnyk1WY83sI1gYHv2g%3D%3D&#rd',
-            picurl: 'http://mmbiz.qpic.cn/mmbiz/hb0fNLLZtnNSzqJelT9KgPnybh1LFCClicyzYxEIER6fCllSq8ZZevkL1cUKpTqoVD9MbeEDdKe2c5z7ceshG9g/640?wx_fmt=jpeg&tp=webp&wxfrom=5'
-          }]
-        }
-      }, _cb);
-
-      weixin.sendCustomerMsg({
-        touser: openid,
-        msgtype: 'text',
-        text: {
-          content: '报名规则：<a href="http://baidu.com">点我查看详细的报名规则</a>'
-        }
-      }, _cb);
+      sendWelcomMsg(openid, cb);
     },
     mediaId: (_cb, ret) => {
       //如果已经生成过二维码，无需重新生成，直接返回      
@@ -104,3 +80,43 @@ function updateMediaIdForUser(openid, cb) {
   });
 }
 exports.updateMediaIdForUser = updateMediaIdForUser;
+
+function sendWelcomMsg(openid, cb) {
+   _u.mySeries({
+    newsMsg: (_cb) => {
+      weixin.sendCustomerMsg({
+        touser: openid,
+        msgtype: 'news',
+        news: {
+          articles: [{
+            title: 'Happy Day',
+            description: 'Is Really A Happy Day',
+            url: 'http://mp.weixin.qq.com/s?__biz=MzAwODE4Nzk2Ng==&tempkey=DtfGz%2F5m1gHUHll6Qr7RvUoW%2BqLgSnD3IVVSgY1vNfRRZl0VBBYfetjFaw1KqBzyWjJ60fgk9U0YL%2BM2rzfcR%2F%2BjhBgmTqoWcpcjzjf2%2FHOhnirfqr4d%2B%2FMeG%2BMwwVmlz8oJvnyk1WY83sI1gYHv2g%3D%3D&#rd',
+            picurl: 'http://mmbiz.qpic.cn/mmbiz/hb0fNLLZtnNSzqJelT9KgPnybh1LFCClicyzYxEIER6fCllSq8ZZevkL1cUKpTqoVD9MbeEDdKe2c5z7ceshG9g/640?wx_fmt=jpeg&tp=webp&wxfrom=5'
+          }, {
+            title: 'Happy Day',
+            description: 'Is Really A Happy Day',
+            url: 'http://mp.weixin.qq.com/s?__biz=MzAwODE4Nzk2Ng==&tempkey=DtfGz%2F5m1gHUHll6Qr7RvUoW%2BqLgSnD3IVVSgY1vNfRRZl0VBBYfetjFaw1KqBzyWjJ60fgk9U0YL%2BM2rzfcR%2F%2BjhBgmTqoWcpcjzjf2%2FHOhnirfqr4d%2B%2FMeG%2BMwwVmlz8oJvnyk1WY83sI1gYHv2g%3D%3D&#rd',
+            picurl: 'http://mmbiz.qpic.cn/mmbiz/hb0fNLLZtnNSzqJelT9KgPnybh1LFCClicyzYxEIER6fCllSq8ZZevkL1cUKpTqoVD9MbeEDdKe2c5z7ceshG9g/640?wx_fmt=jpeg&tp=webp&wxfrom=5'
+          }]
+        }
+      }, _cb);
+    },
+    textMsg: (_cb, ret) => {
+      weixin.sendCustomerMsg({
+        touser: openid,
+        msgtype: 'text',
+        text: {
+          content: '报名规则：<a href="http://baidu.com">点我查看详细的报名规则</a>'
+        }
+      }, _cb);    
+    },
+  }, (err, ret) => {
+    if (err) return cb(err);
+    cb();
+  }); 
+}
+exports.sendWelcomMsg = sendWelcomMsg;
+
+
+
