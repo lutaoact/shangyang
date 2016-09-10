@@ -48,12 +48,12 @@ exports.processSubscribe = (openid, cb) => {
     // 生成课程介绍以及报名方式
     welcome: (_cb, ret) => {
       weixin.sendCustomerMsg({
-        "touser": openid,
-        "msgtype": "text",
-        "text": {
-          "content":"Hello World"
+        touser: openid,
+        msgtype: 'text',
+        text: {
+          content: '报名规则：<a href="http://baidu.com">点我查看详细的报名规则</a>'
         }
-      }, console.log);
+      }, _cb);
     },
     mediaId: (_cb, ret) => {
       //如果已经生成过二维码，无需重新生成，直接返回      

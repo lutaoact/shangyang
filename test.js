@@ -7,21 +7,20 @@ const redisService = _u.service('redis');
 
 
 
-let token = 'FABTt5KzeleYxnMjP8bdpRDGZKIwV-9oiNqxIuKLO09SYxGG_hpfE-oHPQblZI33GJ2eeM3TPROVTN_C28l8oigFvFIAlAxkd3UukDDu6HwMBRhAIAETJ';
+let token = 'hVgSdiiKqUjHQlZxtSr_cM4iDYILpaHZAV_Dhq4v267YRZZVPzbZlW-lFrh8cLZIM8BrZbGtnV5CLGcHBl_IhjGxPFT_FpLh3KjCULedWylGRTQ1id8AXB3cy5EpMt3UXLKgADACQP';
 let openid = 'oSB10wzOr2wcSSjuzcCqbakzZKuo';
 let path = './1.png'
 let msgBody = {
     "touser": openid,
-    "msgtype":"image",
-    "image":
-    {
-      "media_id": '2-08LdGCmIvJ8qoumRWEb8XQcPZhkrXtO-dtC0HYvDjtKPJ1OcQBUUp15XX-9b7b'
+    "msgtype": "text",
+    "text": {
+      "content":"Hello World"
     }
-}
+  };
 
-userService.updateMediaIdForUser(openid, function () {
-	console.log(arguments)
-})
+// userService.updateMediaIdForUser(openid, function () {
+// 	console.log(arguments)
+// })
 // weixin.sendScoreMessage(openid);
 // weixin.sendCustomerMsg(msgBody, function () {
 // 	console.log(arguments)
@@ -47,7 +46,7 @@ userService.updateMediaIdForUser(openid, function () {
 //userService.processInvitation(inviter, message.FromUserName, console.log);
 //redisService.saddInvitee(inviter, message.FromUserName, console.log);
 
-//userService.processSubscribe(openid, console.log);
+userService.processSubscribe(openid, console.log);
 
 //_u.mySeries({
 //  token: (_cb) => {
