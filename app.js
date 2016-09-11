@@ -106,16 +106,15 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
         return _cb();
       }
 
-      let inviter = message.EventKey.replace(/^qrscene_/, '');
-      if (inviter === openid) {
-        //自己扫自己
+      let inviterIncrId = +message.EventKey.replace(/^qrscene_/, '');
+      if (inviterIncrId === ret.user.incrId) {//自己扫自己
         loggerD.write('[Recv Message] Self Subscribe:', '[From]', openid);
         return _cb();
       }
 
-      // 邀请消息
+      loggerD.write('invitation', inviterIncrId, ret.user.incrId, openid);
       loggerD.write('[Recv Message] Invitation Subscribe:', '[From]', openid, '[Inviter]', inviter);
-      userService.processInvitation(inviter, openid, _cb);
+      userService.processInvitation(inviterIncrId, openid, _cb);
     },
   }, (err, ret) => {
     if (err) logger.error(err);

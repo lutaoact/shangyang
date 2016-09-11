@@ -12,6 +12,23 @@ const User = _u.model('User');
 const Invitation = _u.model('Invitation');
 const redisService = _u.service('redis');
 
+function createOne(openid, cb) {
+  _u.mySeries({
+    incrId: (_cb) => {
+      redisService.getUserIncrId(_cb);
+    },
+    user: (_cb) => {
+      let threshold = _.sample([1, 2, 3, 5]);//for abtest
+      let data = {openid, incrId: ret.incrId, threshold};
+      User.create(data, _cb);
+    },
+  }, (err, ret) => {
+    if (err) return cb(err);
+    ret.user = ret.user.toObject();
+    ret.user.isNewCreated = true;//标识新用户
+    cb(null, ret.user);
+  });
+}
 
 exports.processInvitation = (inviter, openid, cb) => {
   _u.mySeries({
@@ -40,20 +57,14 @@ exports.processSubscribe = (openid, cb) => {
         return _cb(null, ret.existedUser.toObject());
       }
       loggerD.write('[User] Create User:', '[User]', openid);
-      User.create({openid}, (err, user) => {
-        if (err) return _cb(err);
-        user = user.toObject();
-        user.isNewCreated = true;//标识新用户
-        _cb(null, user);
-      });
+      createOne(openid, _cb);
     },
     // 生成课程介绍以及报名方式
     welcome: (_cb, ret) => {
       sendWelcomMsg(openid, _cb);
     },
     mediaId: (_cb, ret) => {
-      //如果已经生成过二维码，无需重新生成，直接返回      
-      updateMediaIdForUser(openid, _cb);
+      updateMediaIdForUser(ret.user, _cb);
     },
     // 发送积分变动消息（模板消息）给当前用户
     // score: (_cb, ret) => {
@@ -68,13 +79,13 @@ exports.processSubscribe = (openid, cb) => {
   });
 };
 
-function updateMediaIdForUser(openid, cb) {
+function updateMediaIdForUser(user, cb) {
   _u.mySeries({
     weixin: (_cb) => {
-      weixin.generateQrCodeForOneUser(openid, _cb);
+      weixin.generateQrCodeForOneUser(user, _cb);
     },
     update: (_cb, ret) => {//返回更新后的doc
-      User.update({openid}, ret.weixin, _cb);
+      User.update({openid: user.openid}, ret.weixin, _cb);
     },
   }, (err, ret) => {
     if (err) return cb(err);
@@ -123,6 +134,3 @@ function sendWelcomMsg(openid, cb) {
   }); 
 }
 exports.sendWelcomMsg = sendWelcomMsg;
-
-
-

@@ -84,12 +84,12 @@ function getUserInfo(token, openid, cb) {
 exports.getUserInfo = getUserInfo;
 
 // POST https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKEN
-function createQrcode(accessToken, openid, cb) {
+function createQrcode(accessToken, incrId, cb) {
   let options = {
     url: createQrcodeUrl, qs: {access_token: accessToken}, json: true,
     body: {
-      action_name: 'QR_LIMIT_STR_SCENE',
-      action_info: {scene: {scene_str: openid}},
+      action_name: 'QR_SCENE', expire_seconds: 2592000,
+      action_info: {scene: {scene_id: incrId}},
     },
   };
 
@@ -155,19 +155,19 @@ function getHeadImg(url, openid, cb) {
   });
 }
 
-function generateQrCodeForOneUser(openid, cb) {
+function generateQrCodeForOneUser(token, user, cb) {
+  let openid = user.openid;
+  let threshold = user.threshold;//abtest的阈值
+  let incrId = user.incrId;
   _u.mySeries({
-    token: (_cb) => {
-      getAccessToken(_cb);
-    },
     qrcode: (_cb, ret) => {
-      createQrcode(ret.token, openid, _cb);
+      createQrcode(token, incrId, _cb);
     },
     qrcodePngPath: (_cb, ret) => {
       showQrcode(ret.qrcode.ticket, openid, _cb);
     },
     userInfo: (_cb, ret) => {
-      getUserInfo(ret.token, openid, _cb);
+      getUserInfo(token, openid, _cb);
     },
     getHeadImg: (_cb, ret) => {
       getHeadImg(ret.userInfo.headimgurl, openid, _cb);
@@ -181,8 +181,8 @@ function generateQrCodeForOneUser(openid, cb) {
       }, _cb);
     },
     upload: (_cb, ret) => {
-      uploadImg(ret.token, ret.composePath, _cb);
-    }
+      uploadImg(token, ret.composePath, _cb);
+    },
   }, (err, ret) => {
     if (err) return cb(err);
     cb(null, {
@@ -192,7 +192,7 @@ function generateQrCodeForOneUser(openid, cb) {
     });
   });
 }
-exports.generateQrCodeForOneUser = generateQrCodeForOneUser;
+exports.generateQrCodeForOneUser = invokeWithToken(generateQrCodeForOneUser);
 
 //POST: https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN
 function sendTemplateMessage(accessToken, openid, data, cb) {

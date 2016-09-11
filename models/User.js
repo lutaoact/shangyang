@@ -12,9 +12,15 @@ let schema = new Schema({
     unique: true,
     required: true,
   },
+  incrId: {//用户自增id
+    $type: String,
+    unique: true,
+    required: true,
+  },
   ticket: String,//用来换取二维码
   mediaId: String,//上传之后的素材id
   url: String,//素材的链接地址
+  threshold: Number,
   disabled: {
     $type: Boolean,
   },

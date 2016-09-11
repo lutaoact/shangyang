@@ -24,3 +24,7 @@ exports.getInvitees = (inviter, cb) => {
   let key = redisKey.inviter(inviter);
   dataRedis.scard(key, cb);
 };
+
+exports.getUserIncrId = (cb) => {
+  dataRedis.incr('userIncrId', cb);//每次加1
+};
