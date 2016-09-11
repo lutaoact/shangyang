@@ -7,6 +7,7 @@ const ImageComposer = require('./ImageComposer/')
 const _u = require('./util')
 const redisService = _u.service('redis');
 
+const loggerD = _u.loggerD;
 
 const cache = require('./cache');
 
