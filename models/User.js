@@ -13,14 +13,13 @@ let schema = new Schema({
     required: true,
   },
   incrId: {//用户自增id
-    $type: String,
+    $type: Number,
     unique: true,
     required: true,
   },
   info: {},//微信的userinfo
   ticket: String,//用来换取二维码
   mediaId: String,//上传之后的素材id
-  url: String,//素材的链接地址
   threshold: Number,
   disabled: {
     $type: Boolean,

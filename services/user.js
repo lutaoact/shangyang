@@ -18,9 +18,10 @@ function createOne(openid, cb) {
     incrId: (_cb) => {
       redisService.getUserIncrId(_cb);
     },
-    user: (_cb) => {
+    user: (_cb, ret) => {
       let threshold = _.sample([1, 2, 3, 5]);//for abtest
       let data = {openid, incrId: ret.incrId, threshold};
+      logger.error('user data:', data);
       User.create(data, _cb);
     },
   }, (err, ret) => {
@@ -57,6 +58,20 @@ exports.processInvitation = (inviterIncrId, user, cb) => {
   }, cb);
 };
 
+function updateUserInfo(user, cb) {
+  _u.mySeries({
+    userInfo: (_cb) => {
+      weixin.getUserInfo(user.openid, _cb);
+    },
+    update: (_cb, ret) => {
+      user.info = ret.userInfo;
+      User.update({openid: user.openid}, {info: ret.userInfo}, _cb);
+    },
+  }, (err, ret) => {
+    cb(err, user);
+  });
+}
+
 exports.processSubscribe = (openid, cb) => {
   _u.mySeries({
     existedUser: (_cb) => {
@@ -68,6 +83,9 @@ exports.processSubscribe = (openid, cb) => {
       }
       loggerD.write('[User] Create User:', '[User]', openid);
       createOne(openid, _cb);
+    },
+    update: (_cb, ret) => {
+      updateUserInfo(ret.user, _cb);
     },
     // 生成课程介绍以及报名方式
     welcome: (_cb, ret) => {

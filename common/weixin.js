@@ -8,6 +8,7 @@ const _u = require('./util')
 const redisService = _u.service('redis');
 
 const loggerD = _u.loggerD;
+const logger = _u.logger;
 
 const cache = require('./cache');
 
@@ -81,7 +82,7 @@ function getUserInfo(token, openid, cb) {
     cb(null, resBody);
   });
 }
-exports.getUserInfo = getUserInfo;
+exports.getUserInfo = invokeWithToken(getUserInfo);
 
 // POST https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKEN
 function createQrcode(accessToken, incrId, cb) {
@@ -92,6 +93,7 @@ function createQrcode(accessToken, incrId, cb) {
       action_info: {scene: {scene_id: incrId}},
     },
   };
+  logger.error('qrcode', options.body.action_info);
 
   request.post(options, (err, response, resBody) => {
     if (err) return cb(err);
@@ -121,17 +123,17 @@ function showQrcode(ticket, openid, cb) {
 }
 exports.showQrcode = showQrcode;
 
-// POST https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=ACCESS_TOKEN
-function uploadImg(accessToken, imgPath, cb) {
+// POST https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE
+function uploadImg(token, imgPath, cb) {
   let options = {
-    url: uploadMediaUrl, qs: {access_token: accessToken}, json: true,
-    formData: { type: 'image', media: fs.createReadStream(imgPath) },
+    url: uploadMediaUrl, qs: {access_token: token, type: 'image'}, json: true,
+    formData: { media: fs.createReadStream(imgPath) },
   };
 
   loggerD.write('[Upload Media] Upload Image:', '[Path]', imgPath);
   request.post(options, (err, response, resBody) => {
     if (err) return cb(err);
-    cb(null, resBody);//{"media_id":"xxxx","url":"yyyy"}
+    cb(null, resBody);//{"media_id":"xxxx","type":"yyyy","created_at":"zzz"}
   });
 }
 exports.uploadImg = uploadImg;
@@ -166,11 +168,8 @@ function generateQrCodeForOneUser(token, user, cb) {
     qrcodePngPath: (_cb, ret) => {
       showQrcode(ret.qrcode.ticket, openid, _cb);
     },
-    userInfo: (_cb, ret) => {
-      getUserInfo(token, openid, _cb);
-    },
     getHeadImg: (_cb, ret) => {
-      getHeadImg(ret.userInfo.headimgurl, openid, _cb);
+      getHeadImg(user.info.headimgurl, openid, _cb);
     },
     composePath: (_cb, ret) => {
       const imgComposer = new ImageComposer();
@@ -188,7 +187,6 @@ function generateQrCodeForOneUser(token, user, cb) {
     cb(null, {
       ticket: ret.qrcode.ticket,
       mediaId: ret.upload.media_id,
-      url: ret.upload.url,
     });
   });
 }
@@ -239,7 +237,6 @@ function sendScoreMessage(openid, inviteeid, cb) {
       },  _cb);
       loggerD.write('[Send Message] Score Template:', '[To]', openid, 
         '[Invitee]', inviteeid, '[Score]', ret.inviteeScore);
-
     }
   }, (err, ret) => {
     if (err) return cb(err);

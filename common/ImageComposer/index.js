@@ -9,9 +9,9 @@ const HEIGHT = 710;
 const BOTTOM_HEIGHT = 65; // 二维码距底部距离
 const SPACE = 20; // 头像和二维码间距
 
-const canvas = new Canvas(WIDTH, HEIGHT);
-const Image = Canvas.Image;
-const ctx = canvas.getContext('2d')
+let canvas = new Canvas(WIDTH, HEIGHT);
+let Image = Canvas.Image;
+let ctx = canvas.getContext('2d')
 
 const BACKGROUND = {
   SRC: __dirname + '/example/background.jpg',
@@ -39,6 +39,9 @@ const ImageComposer = function (qrcode, portrait, background ) {
 };
 
 ImageComposer.prototype.drwaBackground = function (src) {
+  canvas = new Canvas(WIDTH, HEIGHT);
+  Image = Canvas.Image;
+  ctx = canvas.getContext('2d')
   return new Promise((resolve, reject) => {
     fs.readFile(src, (err, image) => {
       if (err) return reject(err);
@@ -77,8 +80,6 @@ ImageComposer.prototype.drawPotrait = function (src) {
       let img = new Image;
       img.src = origin;
 
-      if (err) return err;
-
       ctx.beginPath();
       ctx.translate(0,0);
 
@@ -108,6 +109,8 @@ ImageComposer.prototype.ouput = function (output) {
 
     stream.on('data', function(chunk){
       outStream.write(chunk);
+    });
+    stream.on('end', function() {
       resolve();
     });
   });
