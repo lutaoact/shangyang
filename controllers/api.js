@@ -22,5 +22,5 @@ exports.user = (req, res, next) => {
   User.count((req, res) => {
     console.log(arguments)
     res.payload(res);
-  }
+  });
 }
