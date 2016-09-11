@@ -63,6 +63,7 @@ app.use('/auth', require('./auth'));
 app.use('/users', require('./routes/user'));
 
 app.use('/weixin', require('./routes/weixin'));
+app.use('/api', require('./routes/api'));
 
 // process.env.APPID = 
 const wechatConfig = {
