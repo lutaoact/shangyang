@@ -42,6 +42,7 @@ ImageComposer.prototype.drawBackground = function (src) {
   canvas = new Canvas(WIDTH, HEIGHT);
   Image = Canvas.Image;
   ctx = canvas.getContext('2d')
+  //ctx.clearRect(0, 0, WIDTH, HEIGHT);
   return new Promise((resolve, reject) => {
     fs.readFile(src, (err, image) => {
       if (err) return reject(err);

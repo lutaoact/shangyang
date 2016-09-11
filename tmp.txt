@@ -1,0 +1,25 @@
+# 带参数的二维码 扫描
+{ ToUserName: 'gh_690b6500ec3d',
+  FromUserName: 'oSB10w52vUxOabF1FAPB13uyne8g',
+  CreateTime: '1470127499',
+  MsgType: 'event',
+  Event: 'SCAN',
+  EventKey: '123',
+  Ticket: 'gQE58DoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL3dUaHBCTnZtSy1OU0pjcjlYeFNNAAIEUxSfVwMEAAAAAA==' }
+
+# 不带参数的二维码 关注
+{ ToUserName: 'gh_690b6500ec3d',
+  FromUserName: 'oSB10w52vUxOabF1FAPB13uyne8g',
+  CreateTime: '1470127484',
+  MsgType: 'event',
+  Event: 'subscribe',
+  EventKey: '' }
+
+# 带参数的二维码 关注
+{ ToUserName: 'gh_690b6500ec3d',
+  FromUserName: 'oSB10w52vUxOabF1FAPB13uyne8g',
+  CreateTime: '1470127920',
+  MsgType: 'event',
+  Event: 'subscribe',
+  EventKey: 'qrscene_123',
+  Ticket: 'gQE58DoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL3dUaHBCTnZtSy1OU0pjcjlYeFNNAAIEUxSfVwMEAAAAAA==' }
