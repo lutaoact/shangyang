@@ -30,10 +30,16 @@ function createOne(openid, cb) {
   });
 }
 
-exports.processInvitation = (inviter, openid, cb) => {
+exports.processInvitation = (inviterIncrId, user, cb) => {
+  let openid = user.openid;
+  let inviter = '';
   _u.mySeries({
+    inviter: (_cb) => {
+      User.find({incrId: inviterIncrId}, _cb);
+    },
     invitation: (_cb) => {
-      loggerD.write('[Invitation] Create Invitation:', '[Inviter]', 
+      inviter = ret.inviter.openid;
+      loggerD.write('[Invitation] Create Invitation:', '[Inviter]',
         inviter, '[Invitee]', openid);
       Invitation.create({inviter, invitee: openid}, _cb);
     },

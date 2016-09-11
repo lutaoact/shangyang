@@ -8,3 +8,6 @@ const logger = _u.logger;
 const eLog = _u.eLog;
 const User = _u.model('User');
 const AppErr = require('../common/AppErr');
+
+exports.me = (req, res, next) => {
+};

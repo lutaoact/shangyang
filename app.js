@@ -78,9 +78,9 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
   let message = req.weixin;
   Message.create({content: message}, console.log);//所有的消息都存一份，备用
 
-  //暂时只处理subscribe事件，后续可以再丰富
   let openid = message.FromUserName;
 
+  //暂时只处理subscribe事件，后续可以再丰富
   if (message.Event !== 'subscribe') {
     // 非订阅消息
     loggerD.write('[Recv Message] Welcome:', '[From]', openid);
@@ -100,7 +100,6 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
       }
 
       //如果不是新用户，似乎没啥好说的，啥都不做了吧
-      //
       if (!ret.user.isNewCreated) {
         loggerD.write('[Recv Message] Old User Subscribe:', '[From]', openid);
         return _cb();
@@ -114,7 +113,7 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
 
       loggerD.write('invitation', inviterIncrId, ret.user.incrId, openid);
       loggerD.write('[Recv Message] Invitation Subscribe:', '[From]', openid, '[Inviter]', inviter);
-      userService.processInvitation(inviterIncrId, openid, _cb);
+      userService.processInvitation(inviterIncrId, ret.user, _cb);
     },
   }, (err, ret) => {
     if (err) logger.error(err);
