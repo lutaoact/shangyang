@@ -9,6 +9,7 @@ const _u = require('../common/util');
 
 const weixin = require('../common/weixin')
 
+const User = _u.model('User');
 
 
 // /api/user?threshold=1&from=1479686400000&to=1479686400000&interval=10
@@ -18,7 +19,8 @@ exports.user = (req, res, next) => {
   const from = req.query.from;
   const tor = req.query.to;
 
-  // if ()
-
-  res.payload('Hello, world', threshold, from);
+  User.count((req, res) => {
+    console.log(arguments)
+    res.payload(res);
+  }
 }
