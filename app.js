@@ -78,32 +78,49 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
   let message = req.weixin;
   Message.create({content: message}, console.log);//所有的消息都存一份，备用
 
+  //暂时只处理subscribe事件，后续可以再丰富
+  let openid = message.FromUserName;
+
   if (message.Event !== 'subscribe') {
+    // 非订阅消息
+    loggerD.write('[Recv Message] Welcome:', '[From]', openid);
+    loggerD.write('[Send Message] Welcome Reply:', '[To]', openid);
     return res.reply('欢迎再次回来');
   }
 
-  //暂时只处理subscribe事件，后续可以再丰富
-  let openid = message.FromUserName;
   _u.mySeries({
     user: (_cb) => {
       userService.processSubscribe(openid, _cb);
     },
     invitation: (_cb, ret) => {
       //如果不是被人邀请进来的，那啥都不用做
-      if (message.EventKey === '') return _cb();
+      if (message.EventKey === '') {
+        loggerD.write('[Recv Message] No Invitation Subscribe:', '[From]', openid);
+        return _cb();
+      }
 
       //如果不是新用户，似乎没啥好说的，啥都不做了吧
       //
-      if (!ret.user.isNewCreated) return _cb();
+      if (!ret.user.isNewCreated) {
+        loggerD.write('[Recv Message] Old User Subscribe:', '[From]', openid);
+        return _cb();
+      }
 
       let inviter = message.EventKey.replace(/^qrscene_/, '');
-      if (inviter === openid) return _cb();//自己扫自己
+      if (inviter === openid) {
+        //自己扫自己
+        loggerD.write('[Recv Message] Self Subscribe:', '[From]', openid);
+        return _cb();
+      }
 
-      loggerD.write('invitation', inviter, openid);
+      // 邀请消息
+      loggerD.write('[Recv Message] Invitation Subscribe:', '[From]', openid, '[Inviter]', inviter);
       userService.processInvitation(inviter, openid, _cb);
     },
   }, (err, ret) => {
     if (err) logger.error(err);
+
+    loggerD.write('[Send Message] Invitation QRCode:', '[To]', openid, '[MediaId]', ret.user.mediaId);
     res.reply({type: "image", content: {mediaId: ret.user.mediaId}});
   });
 }));

@@ -16,6 +16,8 @@ const redisService = _u.service('redis');
 exports.processInvitation = (inviter, openid, cb) => {
   _u.mySeries({
     invitation: (_cb) => {
+      loggerD.write('[Invitation] Create Invitation:', '[Inviter]', 
+        inviter, '[Invitee]', openid);
       Invitation.create({inviter, invitee: openid}, _cb);
     },
     saveToRedis: (_cb, ret) => {
@@ -37,7 +39,7 @@ exports.processSubscribe = (openid, cb) => {
       if (ret.existedUser) {
         return _cb(null, ret.existedUser.toObject());
       }
-      loggerD.write('createUser', openid);
+      loggerD.write('[User] Create User:', '[User]', openid);
       User.create({openid}, (err, user) => {
         if (err) return _cb(err);
         user = user.toObject();
@@ -84,6 +86,8 @@ exports.updateMediaIdForUser = updateMediaIdForUser;
 function sendWelcomMsg(openid, cb) {
    _u.mySeries({
     newsMsg: (_cb) => {
+      // 课程介绍图文
+      loggerD.write('[Send Message] Introduction News:', '[To]', openid);
       weixin.sendCustomerMsg({
         touser: openid,
         msgtype: 'news',
@@ -103,6 +107,8 @@ function sendWelcomMsg(openid, cb) {
       }, _cb);
     },
     textMsg: (_cb, ret) => {
+      // 报名规则文本
+      loggerD.write('[Send Message] Rule Text:', '[To]', openid);
       weixin.sendCustomerMsg({
         touser: openid,
         msgtype: 'text',

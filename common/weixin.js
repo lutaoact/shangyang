@@ -91,6 +91,7 @@ function createQrcode(accessToken, openid, cb) {
       action_info: {scene: {scene_str: openid}},
     },
   };
+
   request.post(options, (err, response, resBody) => {
     if (err) return cb(err);
     cb(null, resBody);//{"ticket":"xxxx","url":"yyyy"}
@@ -111,6 +112,7 @@ function showQrcode(ticket, openid, cb) {
       cb(err);
     });
 
+  loggerD.write('[Download Media] Download QRCode Image:', '[Path]', imageSrc);
   stream.on('finish', () => {
     console.log(`finish download: ${imageSrc}`);
     cb(null, imageSrc);
@@ -124,6 +126,8 @@ function uploadImg(accessToken, imgPath, cb) {
     url: uploadMediaUrl, qs: {access_token: accessToken}, json: true,
     formData: { type: 'image', media: fs.createReadStream(imgPath) },
   };
+
+  loggerD.write('[Upload Media] Upload Image:', '[Path]', imgPath);
   request.post(options, (err, response, resBody) => {
     if (err) return cb(err);
     cb(null, resBody);//{"media_id":"xxxx","url":"yyyy"}
@@ -143,6 +147,7 @@ function getHeadImg(url, openid, cb) {
       cb(err);
     });
 
+  loggerD.write('[Download Media] Download Head Image:', '[Path]', imageSrc);
   stream.on('finish', () => {
     console.log(`finish download: ${imageSrc}`);
     cb(null, imageSrc);
@@ -231,6 +236,9 @@ function sendScoreMessage(openid, inviteeid, cb) {
           color: '#173177'
         }
       },  _cb);
+      loggerD.write('[Send Message] Score Template:', '[To]', openid, 
+        '[Invitee]', inviteeid, '[Score]', ret.inviteeScore);
+
     }
   }, (err, ret) => {
     if (err) return cb(err);
