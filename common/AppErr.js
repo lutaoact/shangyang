@@ -8,6 +8,7 @@ let msg = {
   paramsLengthError: '参数长度错误',
 
   valueErr: '值错误',
+  notFound: '未找到',
 };
 
 let AppErr = function(errcode, httpStatus, more) {

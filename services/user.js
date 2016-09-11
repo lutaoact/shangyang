@@ -3,6 +3,7 @@
 const _ = require('lodash');
 const moment = require('moment');
 const _u = require('../common/util');
+const AppErr = require('../common/AppErr');
 const loggerD = _u.loggerD;
 const logger = _u.logger;
 
@@ -35,9 +36,12 @@ exports.processInvitation = (inviterIncrId, user, cb) => {
   let inviter = '';
   _u.mySeries({
     inviter: (_cb) => {
-      User.find({incrId: inviterIncrId}, _cb);
+      User.findOne({incrId: inviterIncrId}, _cb);
     },
-    invitation: (_cb) => {
+    invitation: (_cb, ret) => {
+      if (!ret.inviter) {
+        return _cb(new AppErr('notFound'));
+      }
       inviter = ret.inviter.openid;
       loggerD.write('[Invitation] Create Invitation:', '[Inviter]',
         inviter, '[Invitee]', openid);
