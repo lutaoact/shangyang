@@ -89,7 +89,7 @@ exports.processSubscribe = (openid, cb) => {
     },
     // 生成课程介绍以及报名方式
     welcome: (_cb, ret) => {
-      sendWelcomMsg(openid, _cb);
+      sendWelcomMsg(openid, ret.user, _cb);
     },
     mediaId: (_cb, ret) => {
       updateMediaIdForUser(ret.user, _cb);
@@ -122,7 +122,7 @@ function updateMediaIdForUser(user, cb) {
 }
 exports.updateMediaIdForUser = updateMediaIdForUser;
 
-function sendWelcomMsg(openid, cb) {
+function sendWelcomMsg(openid, user, cb) {
    _u.mySeries({
     newsMsg: (_cb) => {
       // 课程介绍图文
@@ -152,6 +152,7 @@ function sendWelcomMsg(openid, cb) {
     },
     textMsg2: (_cb, ret) => {
       // 报名规则文本
+      console.log(user)
       loggerD.write('[Send Message] Rule Text:', '[To]', openid);
       weixin.sendCustomerMsg({
         touser: openid,
