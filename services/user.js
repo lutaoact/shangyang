@@ -132,15 +132,9 @@ function sendWelcomMsg(openid, cb) {
         msgtype: 'news',
         news: {
           articles: [{
-            title: '课程介绍',
-            description: '课程介绍的描述',
-            url: 'http://mp.weixin.qq.com/s?__biz=MzAwODE4Nzk2Ng==&tempkey=DtfGz%2F5m1gHUHll6Qr7RvUoW%2BqLgSnD3IVVSgY1vNfRRZl0VBBYfetjFaw1KqBzyWjJ60fgk9U0YL%2BM2rzfcR%2F%2BjhBgmTqoWcpcjzjf2%2FHOhnirfqr4d%2B%2FMeG%2BMwwVmlz8oJvnyk1WY83sI1gYHv2g%3D%3D&#rd',
-            picurl: 'http://mmbiz.qpic.cn/mmbiz/hb0fNLLZtnNSzqJelT9KgPnybh1LFCClicyzYxEIER6fCllSq8ZZevkL1cUKpTqoVD9MbeEDdKe2c5z7ceshG9g/640?wx_fmt=jpeg&tp=webp&wxfrom=5'
-          }, {
-            title: '我是另一个课程的介绍',
-            description: '我是另一个课程介绍的描述',
-            url: 'http://mp.weixin.qq.com/s?__biz=MzAwODE4Nzk2Ng==&tempkey=DtfGz%2F5m1gHUHll6Qr7RvUoW%2BqLgSnD3IVVSgY1vNfRRZl0VBBYfetjFaw1KqBzyWjJ60fgk9U0YL%2BM2rzfcR%2F%2BjhBgmTqoWcpcjzjf2%2FHOhnirfqr4d%2B%2FMeG%2BMwwVmlz8oJvnyk1WY83sI1gYHv2g%3D%3D&#rd',
-            picurl: 'http://mmbiz.qpic.cn/mmbiz/hb0fNLLZtnNSzqJelT9KgPnybh1LFCClicyzYxEIER6fCllSq8ZZevkL1cUKpTqoVD9MbeEDdKe2c5z7ceshG9g/640?wx_fmt=jpeg&tp=webp&wxfrom=5'
+            title: '5天主动词汇集训营(编辑ing)',
+            description: '中国人学英语热衷背单词, 你数数有多少单词书和单词app!但背了无数单词也只能得到被动词汇量, 并没有真正得到主动词汇量~举手, 请问老师: 什么是主动词汇量?',
+            url: 'http://mp.weixin.qq.com/s?__biz=MzAxMDgwNDk0Nw==&mid=100000016&idx=1&sn=ee32c334e1ba7af3efc710b190a92aae&scene=20#rd',
           }]
         }
       }, _cb);
@@ -152,13 +146,24 @@ function sendWelcomMsg(openid, cb) {
         touser: openid,
         msgtype: 'text',
         text: {
-          content: '报名规则：<a href="http://baidu.com">点我查看详细的报名规则</a>'
+          content: '报名方法1: 邀请3位好友, 抱团学习, 即可免费参加集训营. 回复「抱团」获得专属邀请卡. '
         }
-      }, _cb);    
+      }, _cb);
+    },
+    textMsg2: (_cb, ret) => {
+      // 报名规则文本
+      loggerD.write('[Send Message] Rule Text:', '[To]', openid);
+      weixin.sendCustomerMsg({
+        touser: openid,
+        msgtype: 'text',
+        text: {
+          content: '报名方法2: 如果你决定要做独行侠, 那好吧, 需要交学费50元(每天10元). 回复「独行侠」进入付费通道.'
+        }
+      }, _cb);
     },
   }, (err, ret) => {
     if (err) return cb(err);
     cb();
-  }); 
+  });
 }
 exports.sendWelcomMsg = sendWelcomMsg;

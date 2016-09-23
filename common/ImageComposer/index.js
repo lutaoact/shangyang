@@ -5,10 +5,10 @@ const Canvas = require('canvas')
 const Promise = require('bluebird')
 
 const WIDTH = 400;
-const HEIGHT = 710;
-const BOTTOM_HEIGHT = 65; // 二维码距底部距离
+const HEIGHT = 700;
+const BOTTOM_HEIGHT = 40; // 二维码距底部距离
 const SPACE = 20; // 头像和二维码间距
-
+const PORTRAIT_CENTER = 340;
 let canvas;
 let Image;
 let ctx;
@@ -23,12 +23,12 @@ const BACKGROUND = {
 
 const QRCODE = {
   SRC: __dirname + '/example/qrcode.jpg',
-  WIDTH: 125
+  WIDTH: 90
 }
 
 const PORTRAIT = {
   SRC: __dirname + '/example/portrait.png',
-  RADIUS: 50
+  RADIUS: 56
 }
 
 const ImageComposer = function (qrcode, portrait, background ) {
@@ -63,7 +63,7 @@ ImageComposer.prototype.drawQrcode = function (src) {
       if (err) return reject(err);
       let img = new Image;
       img.src = origin;
-      ctx.drawImage(img, this.background.WIDTH / 2 - this.qrcode.WIDTH,
+      ctx.drawImage(img, this.background.WIDTH / 2 - this.qrcode.WIDTH / 2,
         this.background.HEIGHT - this.qrcode.WIDTH - BOTTOM_HEIGHT,
         this.qrcode.WIDTH,
         this.qrcode.WIDTH);
@@ -85,15 +85,15 @@ ImageComposer.prototype.drawPotrait = function (src) {
       ctx.translate(0,0);
 
       ctx.arc(
-        this.background.WIDTH / 2 + SPACE + this.portrait.RADIUS,
-        this.background.HEIGHT - this.qrcode.WIDTH / 2 - BOTTOM_HEIGHT,
+        this.background.WIDTH / 2,
+        PORTRAIT_CENTER,
         this.portrait.RADIUS, 0, Math.PI * 2, true);
 
       ctx.clip()
 
       ctx.drawImage(img,
-        this.background.WIDTH / 2 + SPACE,
-        this.background.HEIGHT - this.qrcode.WIDTH / 2 - BOTTOM_HEIGHT - this.portrait.RADIUS,
+        this.background.WIDTH / 2 - this.portrait.RADIUS,
+        PORTRAIT_CENTER - this.portrait.RADIUS,
         this.portrait.RADIUS * 2,
         this.portrait.RADIUS * 2);
 
