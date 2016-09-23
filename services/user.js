@@ -146,13 +146,12 @@ function sendWelcomMsg(openid, user, cb) {
         touser: openid,
         msgtype: 'text',
         text: {
-          content: '报名方法1: 邀请3位好友, 抱团学习, 即可免费参加集训营. 回复「抱团」获得专属邀请卡. '
+          content: '报名方法1: 邀请' + (user.threshold) +'位好友, 抱团学习, 即可免费参加集训营. 回复「抱团」获得专属邀请卡. '
         }
       }, _cb);
     },
     textMsg2: (_cb, ret) => {
       // 报名规则文本
-      console.log(user)
       loggerD.write('[Send Message] Rule Text:', '[To]', openid);
       weixin.sendCustomerMsg({
         touser: openid,
