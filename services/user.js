@@ -133,7 +133,7 @@ function sendWelcomMsg(openid, user, cb) {
         news: {
           articles: [{
             title: '5天主动词汇集训营(编辑ing)',
-            description: '中国人学英语热衷背单词, 你数数有多少单词书和单词app!但背了无数单词也只能得到被动词汇量, 并没有真正得到主动词汇量~举手, 请问老师: 什么是主动词汇量?',
+            description: '',
             url: 'http://mp.weixin.qq.com/s?__biz=MzAxMDgwNDk0Nw==&mid=100000016&idx=1&sn=ee32c334e1ba7af3efc710b190a92aae&scene=20#rd',
           }]
         }
