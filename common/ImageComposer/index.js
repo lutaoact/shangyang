@@ -9,9 +9,9 @@ const HEIGHT = 700;
 const BOTTOM_HEIGHT = 40; // 二维码距底部距离
 const SPACE = 20; // 头像和二维码间距
 const PORTRAIT_CENTER = 340;
-let canvas;
-let Image;
-let ctx;
+// let canvas;
+// let Image;
+// let ctx;
 
 const BACKGROUND = {
   SRC: __dirname + '/example/background.jpg',
@@ -36,19 +36,20 @@ const ImageComposer = function (qrcode, portrait, background ) {
   this.portrait = portrait || PORTRAIT;
   this.background = background || BACKGROUND;
   this.output = {};
+  this.img = new Canvas.Image;
+
 };
 
 ImageComposer.prototype.drawBackground = function (src) {
-  canvas = new Canvas(WIDTH, HEIGHT);
-  Image = Canvas.Image;
-  ctx = canvas.getContext('2d')
+  this.canvas = new Canvas(WIDTH, HEIGHT);
+  this.ctx = this.canvas.getContext('2d')
+  console.log(this.ctx)
   //ctx.clearRect(0, 0, WIDTH, HEIGHT);
   return new Promise((resolve, reject) => {
     fs.readFile(src, (err, image) => {
       if (err) return reject(err);
-      let img = new Image;
-      img.src = image;
-      ctx.drawImage(img, this.background.X,
+      this.img.src = image;
+      this.ctx.drawImage(this.img, this.background.X,
               this.background.Y,
               this.background.WIDTH,
               this.background.HEIGHT);
@@ -61,9 +62,8 @@ ImageComposer.prototype.drawQrcode = function (src) {
   return new Promise((resolve, reject) => {
     fs.readFile(src, (err, origin) => {
       if (err) return reject(err);
-      let img = new Image;
-      img.src = origin;
-      ctx.drawImage(img, this.background.WIDTH / 2 - this.qrcode.WIDTH / 2,
+      this.img.src = origin;
+      this.ctx.drawImage(this.img, this.background.WIDTH / 2 - this.qrcode.WIDTH / 2,
         this.background.HEIGHT - this.qrcode.WIDTH - BOTTOM_HEIGHT,
         this.qrcode.WIDTH,
         this.qrcode.WIDTH);
@@ -78,20 +78,19 @@ ImageComposer.prototype.drawPotrait = function (src) {
     fs.readFile(src, (err, origin) => {
       if (err) return reject(err);
 
-      let img = new Image;
-      img.src = origin;
+      this.img.src = origin;
 
-      ctx.beginPath();
-      ctx.translate(0,0);
+      this.ctx.beginPath();
+      this.ctx.translate(0,0);
 
-      ctx.arc(
+      this.ctx.arc(
         this.background.WIDTH / 2,
         PORTRAIT_CENTER,
         this.portrait.RADIUS, 0, Math.PI * 2, true);
 
-      ctx.clip()
+      this.ctx.clip()
 
-      ctx.drawImage(img,
+      this.ctx.drawImage(this.img,
         this.background.WIDTH / 2 - this.portrait.RADIUS,
         PORTRAIT_CENTER - this.portrait.RADIUS,
         this.portrait.RADIUS * 2,
@@ -104,9 +103,12 @@ ImageComposer.prototype.drawPotrait = function (src) {
 };
 
 ImageComposer.prototype.ouput = function (output) {
-  return new Promise(function (resolve, reject) {
+
+  return new Promise((resolve, reject) => {
     const outStream = fs.createWriteStream(output)
-    const stream = canvas.createPNGStream();
+      console.log(this.canvas)
+
+    const stream = this.canvas.createPNGStream();
 
     stream.on('data', function(chunk){
       outStream.write(chunk);
