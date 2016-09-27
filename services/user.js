@@ -49,7 +49,7 @@ exports.processInvitation = (inviterIncrId, user, cb) => {
       Invitation.create({inviter, invitee: openid}, _cb);
     },
     saveToRedis: (_cb, ret) => {
-      redisService.saddInvitee(inviter, openid, _cb);
+      redisService.addInvitee(inviter, openid, _cb);
     },
     // 发送积分变动消息（模板消息）给当其邀请者
     score: (_cb, ret) => {

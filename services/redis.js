@@ -15,14 +15,14 @@ const redisKey = {
   inviter: (inviter) => { return `i:${inviter}`; },
 };
 
-exports.saddInvitee = (inviter, invitee, cb) => {
+exports.addInvitee = (inviter, invitee, cb) => {
   let key = redisKey.inviter(inviter);
-  dataRedis.sadd(key, invitee, cb);
+  dataRedis.zadd(key, +moment(), invitee, cb);
 };
 
-exports.getInvitees = (inviter, cb) => {
+exports.getInviterScore = (inviter, cb) => {
   let key = redisKey.inviter(inviter);
-  dataRedis.scard(key, cb);
+  dataRedis.zcard(key, cb);
 };
 
 exports.getUserIncrId = (cb) => {
