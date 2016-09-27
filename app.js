@@ -74,6 +74,7 @@ const wechatConfig = {
 
 const userService = _u.service('user');
 const Message = _u.model('Message');
+const User = _u.model('User');
 
 app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
   let message = req.weixin;
@@ -100,7 +101,7 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
       inviterIncrId = +message.EventKey.replace(/^qrscene_/, '');
       User.findOne({incrId: inviterIncrId}, _cb);
     },
-    user: (_cb) => {
+    user: (_cb, ret) => {
       if (ret.inviterUser && ret.inviterUser.openid === openid) {//自己扫自己
         loggerD.write('[Recv] Self Subscribe:', '[From]', openid);
         return _cb(new AppErr('selfAction', null, {openid}));
