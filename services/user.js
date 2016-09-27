@@ -34,7 +34,7 @@ function createOne(openid, inviterUser, cb) {
   });
 }
 
-exports.processInvitation = (inviter, invitee, cb) => {
+exports.processInvitation = (inviter, invitee, inviterUser, cb) => {
   _u.mySeries({
     invitation: (_cb, ret) => {
       loggerD.write('[Invitation] Create Invitation:', '[Inviter]',
@@ -46,7 +46,7 @@ exports.processInvitation = (inviter, invitee, cb) => {
     },
     // 发送积分变动消息（模板消息）给当其邀请者
     score: (_cb, ret) => {
-      weixin.sendScoreMessage(inviter, invitee, _cb);
+      weixin.sendScoreMessage(inviter, invitee, inviterUser, _cb);
     },
   }, cb);
 };

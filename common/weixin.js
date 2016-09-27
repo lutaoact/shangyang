@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const request = require('request');
+const moment = require('moment');
 
 const ImageComposer = require('./ImageComposer/')
 const _u = require('./util')
@@ -211,7 +212,7 @@ function sendTemplateMessage(accessToken, openid, data, cb) {
 }
 exports.sendTemplateMessage = sendTemplateMessage;
 
-function sendScoreMessage(openid, inviteeid, cb) {
+function sendScoreMessage(openid, inviteeid, inviterUser, cb) {
   _u.mySeries({
     token: (_cb) => {
       getAccessToken(_cb);
@@ -229,15 +230,15 @@ function sendScoreMessage(openid, inviteeid, cb) {
       sendTemplateMessage(ret.token, openid, {
 
 
-        name: {
-          // value: ret.userInfo.nickname + '邀请' + ret.invitee.nickname,
-          value: '邀请' + ret.invitee.nickname,
-          color: '#173177'
-        },
-        score: {
-          value: ret.inviterScore,
-          color: '#173177'
-        },
+        // name: {
+        //   // value: ret.userInfo.nickname + '邀请' + ret.invitee.nickname,
+        //   value: '邀请' + ret.invitee.nickname,
+        //   color: '#173177'
+        // },
+        // score: {
+        //   value: ret.inviterScore,
+        //   color: '#173177'
+        // },
 
         // {{first.DATA}}
         // 姓名：{{keyword1.DATA}}
@@ -252,12 +253,12 @@ function sendScoreMessage(openid, inviteeid, cb) {
           color: ''
         },
         keyword2: {
-          value: new Date(), //需要格式化
+          value: moment().format('YYYY MMMM Do, hh:mm:ss'),
           color: ''
         },
 
         remark: {
-          value: '影响力积累到' + 10 + '即可免费抱团学习',
+          value: '影响力积累到' + inviterUser.threshold + '即可免费抱团学习', // threshold
           color: ''
         }
       },  _cb);
