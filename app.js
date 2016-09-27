@@ -84,42 +84,54 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
   //暂时只处理subscribe事件，后续可以再丰富
   if (message.Event !== 'subscribe') {
     // 非订阅消息
-    loggerD.write('[Recv Message] Welcome:', '[From]', openid);
-    loggerD.write('[Send Message] Welcome Reply:', '[To]', openid);
+    loggerD.write('[Recv] Welcome:', '[From]', openid);
+    loggerD.write('[Send] Welcome Reply:', '[To]', openid);
     return res.reply('欢迎再次回来');
   }
 
+  let inviterIncrId = '';
   _u.mySeries({
-    user: (_cb) => {
-      userService.processSubscribe(openid, _cb);
-    },
-    invitation: (_cb, ret) => {
+    inviterUser: (_cb) => {
       //如果不是被人邀请进来的，那啥都不用做
       if (message.EventKey === '') {
-        loggerD.write('[Recv Message] No Invitation Subscribe:', '[From]', openid);
+        loggerD.write('[Recv] No Invitation Subscribe:', '[From]', openid);
         return _cb();
       }
-
+      inviterIncrId = +message.EventKey.replace(/^qrscene_/, '');
+      User.findOne({incrId: inviterIncrId}, _cb);
+    },
+    user: (_cb) => {
+      if (ret.inviterUser && ret.inviterUser.openid === openid) {//自己扫自己
+        loggerD.write('[Recv] Self Subscribe:', '[From]', openid);
+        return _cb(new AppErr('selfAction', null, {openid}));
+      }
+      if (ret.inviterUser === null) {
+        loggerD.write('[Recv] inviterUser null:', inviterIncrId);
+      }
+      userService.processSubscribe(openid, ret.inviterUser, _cb);
+    },
+    invitation: (_cb, ret) => {
+      //如果没有邀请者，那也就不需要添加邀请记录，直接完成
+      if (!ret.inviterUser) {
+        return _cb();
+      }
       //如果不是新用户，似乎没啥好说的，啥都不做了吧
       if (!ret.user.isNewCreated) {
-        loggerD.write('[Recv Message] Old User Subscribe:', '[From]', openid);
-        return _cb();
-      }
-
-      let inviterIncrId = +message.EventKey.replace(/^qrscene_/, '');
-      if (inviterIncrId === ret.user.incrId) {//自己扫自己
-        loggerD.write('[Recv Message] Self Subscribe:', '[From]', openid);
+        loggerD.write('[Recv] Old User Subscribe:', '[From]', openid);
         return _cb();
       }
 
       loggerD.write('invitation', inviterIncrId, ret.user.incrId, openid);
-      loggerD.write('[Recv Message] Invitation Subscribe:', '[From]', openid, '[InviterIncrId]', inviterIncrId);
-      userService.processInvitation(inviterIncrId, ret.user, _cb);
+      loggerD.write('[Recv] Invitation Subscribe:', '[From]', openid, '[InviterIncrId]', inviterIncrId);
+      userService.processInvitation(ret.inviterUser.openid, openid, _cb);
     },
   }, (err, ret) => {
-    if (err) logger.error(err);
+    if (err) {
+      logger.error(err);
+      return res.reply('');
+    }
 
-    loggerD.write('[Send Message] Invitation QRCode:', '[To]', openid, '[MediaId]', ret.user.mediaId);
+    loggerD.write('[Send] Invitation QRCode:', '[To]', openid, '[MediaId]', ret.user.mediaId);
     res.reply({type: "image", content: {mediaId: ret.user.mediaId}});
   });
 }));

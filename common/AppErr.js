@@ -9,6 +9,7 @@ let msg = {
 
   valueErr: '值错误',
   notFound: '未找到',
+  selfAction: '自己的操作',
 };
 
 let AppErr = function(errcode, httpStatus, more) {

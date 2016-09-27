@@ -13,15 +13,17 @@ const User = _u.model('User');
 const Invitation = _u.model('Invitation');
 const redisService = _u.service('redis');
 
-function createOne(openid, cb) {
+function createOne(openid, inviterUser, cb) {
   _u.mySeries({
     incrId: (_cb) => {
       redisService.getUserIncrId(_cb);
     },
     user: (_cb, ret) => {
-      let threshold = _.sample([1, 2, 3, 5]);//for abtest
+      //for abtest: 被邀请用户使用邀请者的threshold，没有邀请者则随机抽取
+      let threshold = inviterUser
+                        ? inviterUser.threshold
+                        : _.sample([1, 2, 3, 5]);
       let data = {openid, incrId: ret.incrId, threshold};
-      logger.error('user data:', data);
       User.create(data, _cb);
     },
   }, (err, ret) => {
@@ -32,28 +34,19 @@ function createOne(openid, cb) {
   });
 }
 
-exports.processInvitation = (inviterIncrId, user, cb) => {
-  let openid = user.openid;
-  let inviter = '';
+exports.processInvitation = (inviter, invitee, cb) => {
   _u.mySeries({
-    inviter: (_cb) => {
-      User.findOne({incrId: inviterIncrId}, _cb);
-    },
     invitation: (_cb, ret) => {
-      if (!ret.inviter) {
-        return _cb(new AppErr('notFound'));
-      }
-      inviter = ret.inviter.openid;
       loggerD.write('[Invitation] Create Invitation:', '[Inviter]',
-        inviter, '[Invitee]', openid);
-      Invitation.create({inviter, invitee: openid}, _cb);
+        inviter, '[Invitee]', invitee);
+      Invitation.create({inviter, invitee}, _cb);
     },
     saveToRedis: (_cb, ret) => {
-      redisService.addInvitee(inviter, openid, _cb);
+      redisService.addInvitee(inviter, invitee, _cb);
     },
     // 发送积分变动消息（模板消息）给当其邀请者
     score: (_cb, ret) => {
-      weixin.sendScoreMessage(inviter, openid, _cb);
+      weixin.sendScoreMessage(inviter, invitee, _cb);
     },
   }, cb);
 };
@@ -72,7 +65,7 @@ function updateUserInfo(user, cb) {
   });
 }
 
-exports.processSubscribe = (openid, cb) => {
+exports.processSubscribe = (openid, inviterUser, cb) => {
   _u.mySeries({
     existedUser: (_cb) => {
       User.findOne({openid}, _cb);
@@ -82,7 +75,7 @@ exports.processSubscribe = (openid, cb) => {
         return _cb(null, ret.existedUser.toObject());
       }
       loggerD.write('[User] Create User:', '[User]', openid);
-      createOne(openid, _cb);
+      createOne(openid, inviterUser, _cb);
     },
     update: (_cb, ret) => {
       updateUserInfo(ret.user, _cb);
