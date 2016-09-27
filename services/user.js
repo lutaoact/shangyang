@@ -139,7 +139,7 @@ function sendWelcomMsg(openid, user, cb) {
         touser: openid,
         msgtype: 'text',
         text: {
-          content: '报名方法1: 邀请' + (user.threshold) +'位好友, 抱团学习, 即可免费参加集训营. 回复「抱团」获得专属邀请卡. '
+          content: '报名方法1: 邀请' + (user.threshold) +'位好友, 抱团学习, 即可免费参加集训营. 下边是你的专属邀请卡, 把它发给你的想提高英语的好友吧. '
         }
       }, _cb);
     },
@@ -150,7 +150,9 @@ function sendWelcomMsg(openid, user, cb) {
         touser: openid,
         msgtype: 'text',
         text: {
-          content: '报名方法2: 如果你决定要做独行侠, 那好吧, 需要交学费50元(每天10元). 回复「独行侠」进入付费通道.'
+          content: '报名方法2: 如果你决定要做独行侠, 那好吧, 需要交学费50元. '
+              + '点击这里进入<a href="http://mp.weixin.qq.com/s?__biz=MzAxMDgwNDk0Nw==&mid=100000031'
+              + '&idx=1&sn=cf5db8e54f6274f7816b12db27b730ac&scene=20#rd">付费报名通道</a>.'
         }
       }, _cb);
     },

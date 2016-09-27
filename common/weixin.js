@@ -27,7 +27,9 @@ const uploadMediaUrl = `${API_BASE}/media/upload`;
 const userInfoUrl = `${API_BASE}/user/info`;
 const templateMsgSendUrl = `${API_BASE}/message/template/send`;
 
-const templateId = 'EMU7DdpXcA-msQkLLwp2R1oZINryZi-uJ9XwpDjvHkI';
+// const templateId = 'EMU7DdpXcA-msQkLLwp2R1oZINryZi-uJ9XwpDjvHkI';
+const templateId = 'eLHxc-wK89kjyc2rHDHXCnrPECB4XNqCBJ5q7PU3ytM';
+
 
 function invokeWithToken(myFunc) {
   return function() {
@@ -225,6 +227,8 @@ function sendScoreMessage(openid, inviteeid, cb) {
     },
     template: (_cb, ret) => {
       sendTemplateMessage(ret.token, openid, {
+
+
         name: {
           // value: ret.userInfo.nickname + '邀请' + ret.invitee.nickname,
           value: '邀请' + ret.invitee.nickname,
@@ -233,9 +237,31 @@ function sendScoreMessage(openid, inviteeid, cb) {
         score: {
           value: ret.inviterScore,
           color: '#173177'
+        },
+
+        // {{first.DATA}}
+        // 姓名：{{keyword1.DATA}}
+        // 时间：{{keyword2.DATA}}
+        // {{remark.DATA}}
+        first: {
+          value: '你有' + ret.inviterScore + '位好友扫码加入，你当前的影响力为' + ret.inviterScore,
+          color: ''
+        },
+        keyword1: {
+          value: ret.invitee.nickname,
+          color: ''
+        },
+        keyword2: {
+          value: new Date(), //需要格式化
+          color: ''
+        },
+
+        remark: {
+          value: '影响力积累到' + 10 + '即可免费抱团学习',
+          color: ''
         }
       },  _cb);
-      loggerD.write('[Send Message] Score Template:', '[To]', openid, 
+      loggerD.write('[Send Message] Score Template:', '[To]', openid,
         '[Invitee]', inviteeid, '[Score]', ret.inviterScore);
     }
   }, (err, ret) => {

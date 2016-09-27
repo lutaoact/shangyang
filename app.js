@@ -65,11 +65,12 @@ app.use('/users', require('./routes/user'));
 app.use('/weixin', require('./routes/weixin'));
 app.use('/api', require('./routes/api'));
 
-// process.env.APPID = 
+// process.env.APPID =
 const wechatConfig = {
   token: 'weixin',
   appid: process.env.APPID,
-  encodingAESKey: 'wmYBjHcEYQmRC0aPMJ556u5oAdpYD5NIlPMijX72hKY'
+  // encodingAESKey: 'wmYBjHcEYQmRC0aPMJ556u5oAdpYD5NIlPMijX72hKY'
+  encodingAESKey: 'J64fqLqWiiWc11gybKlMsJjoFox6euM4j1wsbhcGBC9'
 };
 
 const userService = _u.service('user');
@@ -77,6 +78,8 @@ const Message = _u.model('Message');
 const User = _u.model('User');
 
 app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
+  res.end(req.query.echostr);
+  return;
   let message = req.weixin;
   Message.create({content: message}, console.log);//所有的消息都存一份，备用
 
