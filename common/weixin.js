@@ -220,8 +220,8 @@ function sendScoreMessage(openid, inviteeid, cb) {
     invitee: (_cb, ret) => {
       getUserInfo(ret.token, inviteeid, _cb);
     },
-    inviteeScore: (_cb, ret) => {
-      redisService.getInvitees(openid, _cb);
+    inviterScore: (_cb, ret) => {//邀请者的得分
+      redisService.getInviterScore(openid, _cb);
     },
     template: (_cb, ret) => {
       sendTemplateMessage(ret.token, openid, {
@@ -231,12 +231,12 @@ function sendScoreMessage(openid, inviteeid, cb) {
           color: '#173177'
         },
         score: {
-          value: ret.inviteeScore,
+          value: ret.inviterScore,
           color: '#173177'
         }
       },  _cb);
       loggerD.write('[Send Message] Score Template:', '[To]', openid, 
-        '[Invitee]', inviteeid, '[Score]', ret.inviteeScore);
+        '[Invitee]', inviteeid, '[Score]', ret.inviterScore);
     }
   }, (err, ret) => {
     if (err) return cb(err);
