@@ -127,7 +127,7 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
 
       loggerD.write('invitation', inviterIncrId, ret.user.incrId, openid);
       loggerD.write('[Recv] Invitation Subscribe:', '[From]', openid, '[InviterIncrId]', inviterIncrId);
-      userService.processInvitation(ret.inviterUser.openid, openid, ret.inviterUser, _cb);
+      userService.processInvitation(ret.inviterUser, openid, _cb);
     },
   }, (err, ret) => {
     if (err) {

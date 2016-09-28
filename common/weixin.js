@@ -31,7 +31,6 @@ const templateMsgSendUrl = `${API_BASE}/message/template/send`;
 // const templateId = 'EMU7DdpXcA-msQkLLwp2R1oZINryZi-uJ9XwpDjvHkI';
 const templateId = 'eLHxc-wK89kjyc2rHDHXCnrPECB4XNqCBJ5q7PU3ytM';
 
-
 function invokeWithToken(myFunc) {
   return function() {
     let args = Array.prototype.slice.call(arguments, 0);
@@ -159,6 +158,50 @@ function getHeadImg(url, openid, cb) {
     cb(null, imageSrc);
   });
 }
+
+function processQualifiedInviter(inviter, cb) {
+  _u.mySeries({
+    rank: (_cb) => {
+      redisService.getNextQualifiedRank(_cb);
+    },
+    addQualifiedInviterToRank: (_cb, ret) => {
+      redisService.addQualifiedInviterToRank(inviter, ret.rank, _cb);
+    },
+    upload: (_cb, ret) => {
+      let group = Math.ceil(ret.rank / 100);
+      invokeWithToken(uploadImg)(`./groupQrCode/${group}.jpg`, _cb);
+    },
+    sendQrCode: (_cb, ret) => {
+      console.log(ret.upload);
+      //TODO 发送二维码 ret.upload.media_id
+      _cb();
+    },
+  }, cb);
+}
+
+function processInviterWithEnoughScore(inviter, cb) {
+  _u.mySeries({
+    rank: (_cb) => {//查看这个邀请者是否已经有排名了
+      redisService.getQualifiedRank(inviter, _cb);
+    },
+    processRank: (_cb, ret) => {
+      if (ret.rank) return _cb();//如果已经有排名了，就不需要再处理了
+      processQualifiedInviter(inviter, _cb);//如果没有排名，那处理这个达标用户
+    },
+  }, cb);
+}
+
+exports.sendGroupQrcode = (inviter, threshold, cb) => {
+  _u.mySeries({
+    score: (_cb) => {
+      redisService.getInviterScore(inviter, _cb);
+    },
+    processScore: (_cb, ret) => {
+      if (ret.score < threshold) return _cb();//如果分数不够，直接离开
+      processInviterWithEnoughScore(inviter, _cb);
+    },
+  }, cb);
+};
 
 function generateQrCodeForOneUser(token, user, cb) {
   let openid = user.openid;

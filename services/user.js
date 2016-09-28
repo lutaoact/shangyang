@@ -34,7 +34,9 @@ function createOne(openid, inviterUser, cb) {
   });
 }
 
-exports.processInvitation = (inviter, invitee, inviterUser, cb) => {
+exports.processInvitation = (inviterUser, invitee, cb) => {
+  let inviter   = inviterUser.openid;
+  let threshold = inviterUser.threshold;
   _u.mySeries({
     invitation: (_cb, ret) => {
       loggerD.write('[Invitation] Create Invitation:', '[Inviter]',
@@ -44,8 +46,10 @@ exports.processInvitation = (inviter, invitee, inviterUser, cb) => {
     saveToRedis: (_cb, ret) => {
       redisService.addInvitee(inviter, invitee, _cb);
     },
-    // 发送积分变动消息（模板消息）给当其邀请者
-    score: (_cb, ret) => {
+    sendGroupQrcode: (_cb, ret) => {
+      weixin.sendGroupQrcode(inviter, threshold, _cb);
+    },
+    score: (_cb, ret) => {// 发送积分变动消息（模板消息）给其邀请者
       weixin.sendScoreMessage(inviter, invitee, inviterUser, _cb);
     },
   }, cb);
