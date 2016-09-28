@@ -62,6 +62,7 @@ function sendCustomerMsg(token, msgBody, cb) {
   });
 }
 exports.sendCustomerMsg = invokeWithToken(sendCustomerMsg);
+const sendCustomerMsgWithToken = invokeWithToken(sendCustomerMsg);
 //weixin.sendCustomerMsg(msgBody, console.log);
 
 // GET https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
@@ -139,6 +140,7 @@ function uploadImg(token, imgPath, cb) {
   });
 }
 exports.uploadImg = uploadImg;
+const uploadImgWithToken = invokeWithToken(uploadImg);
 
 function getHeadImg(url, openid, cb) {
   console.log(url);
@@ -169,12 +171,14 @@ function processQualifiedInviter(inviter, cb) {
     },
     upload: (_cb, ret) => {
       let group = Math.ceil(ret.rank / 100);
-      invokeWithToken(uploadImg)(`./groupQrCode/${group}.jpg`, _cb);
+      uploadImgWithToken(`./groupQrCode/${group}.jpg`, _cb);
     },
     sendQrCode: (_cb, ret) => {
-      console.log(ret.upload);
-      //TODO 发送二维码 ret.upload.media_id
-      _cb();
+      let msgBody = {
+        touser: inviter, msgtype: "image",
+        image: { media_id: ret.upload.media_id }
+      };
+      sendCustomerMsgWithToken(msgBody, _cb);
     },
   }, cb);
 }
