@@ -274,6 +274,10 @@ function sendScoreMessage(openid, inviteeid, inviterUser, cb) {
       redisService.getInviterScore(openid, _cb);
     },
     template: (_cb, ret) => {
+
+      moment.locale('zh-cn');
+// console.log(moment().format('YYYY年M月Do hh时mm分'))
+
       sendTemplateMessage(ret.token, openid, {
 
 
@@ -300,7 +304,7 @@ function sendScoreMessage(openid, inviteeid, inviterUser, cb) {
           color: ''
         },
         keyword2: {
-          value: moment().format('YYYY MMMM Do, hh:mm:ss'),
+          value: moment().format('YYYY年M月Do hh时mm分'),
           color: ''
         },
 
