@@ -14,6 +14,7 @@ const dataRedis = redisdb.data;
 const redisKey = {
   inviter: (inviter) => { return `i:${inviter}`; },
   qualifiedRank: 'qr:2016-1',
+  qualifiedTime: 'qt:2016-1',
 };
 
 exports.addInvitee = (inviter, invitee, cb) => {
@@ -34,10 +35,17 @@ exports.getQualifiedRank = (inviter, cb) => {
   dataRedis.zscore(redisKey.qualifiedRank, inviter, cb);
 };
 
-exports.getLatestQualifiedRank = (cb) => {
+exports.getNextQualifiedRank = (cb) => {
   let key = redisKey.qualifiedRank;
   dataRedis.zrevrange(key, 0, 0, 'withscores', (err, pair) => {
     if (err) return cb(err);
     cb(null, ~~pair[1] + 1);
   });
+};
+
+exports.addQualifiedInviterToRank = (inviter, rank, cb) => {
+  dataRedis.multi([
+    ['zadd', redisKey.qualifiedRank, rank,      inviter],
+    ['zadd', redisKey.qualifiedTime, +moment(), inviter],
+  ]).exec(cb);
 };
