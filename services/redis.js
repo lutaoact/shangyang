@@ -13,6 +13,7 @@ const dataRedis = redisdb.data;
 
 const redisKey = {
   inviter: (inviter) => { return `i:${inviter}`; },
+  qualifiedRank: 'qr:2016-1',
 };
 
 exports.addInvitee = (inviter, invitee, cb) => {
@@ -27,4 +28,16 @@ exports.getInviterScore = (inviter, cb) => {
 
 exports.getUserIncrId = (cb) => {
   dataRedis.incr('userIncrId', cb);//每次加1
+};
+
+exports.getQualifiedRank = (inviter, cb) => {
+  dataRedis.zscore(redisKey.qualifiedRank, inviter, cb);
+};
+
+exports.getLatestQualifiedRank = (cb) => {
+  let key = redisKey.qualifiedRank;
+  dataRedis.zrevrange(key, 0, 0, 'withscores', (err, pair) => {
+    if (err) return cb(err);
+    cb(null, ~~pair[1] + 1);
+  });
 };
