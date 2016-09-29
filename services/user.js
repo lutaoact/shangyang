@@ -129,9 +129,10 @@ function sendWelcomMsg(openid, user, cb) {
         msgtype: 'news',
         news: {
           articles: [{
-            title: '5天主动词汇集训营(编辑ing)',
-            description: '',
-            url: 'http://mp.weixin.qq.com/s?__biz=MzAxMDgwNDk0Nw==&mid=100000016&idx=1&sn=ee32c334e1ba7af3efc710b190a92aae&scene=20#rd',
+            title: '5天主动词汇集训营',
+            picurl: 'https://mmbiz.qlogo.cn/mmbiz_jpg/UaXlUaIUiaTtkJNuLWH5DAiaWV08N1kqR1qtt3gkibfs75I0gQCIbDxqoxYe4PRFiamtL7eqJVdNsTbhcxs15yf6QA/0?wx_fmt=jpeg',
+            description: '举手, 请问老师: 什么是主动词汇量? 呃呃呃...',
+            url: 'http://mp.weixin.qq.com/s?__biz=MzAxMDgwNDk0Nw==&mid=100000016&idx=1&sn=ee32c334e1ba7af3efc710b190a92aae&scene=20#rd'
           }]
         }
       }, _cb);
