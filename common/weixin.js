@@ -3,6 +3,9 @@
 const fs = require('fs');
 const request = require('request');
 const moment = require('moment');
+const sprintf = require("sprintf-js").sprintf;
+
+const constants = require('./constants')
 
 const ImageComposer = require('./ImageComposer/')
 const _u = require('./util')
@@ -162,6 +165,7 @@ function getHeadImg(url, openid, cb) {
 }
 
 function processQualifiedInviter(inviter, cb) {
+  let group = '';
   _u.mySeries({
     rank: (_cb) => {
       redisService.getNextQualifiedRank(_cb);
@@ -170,10 +174,18 @@ function processQualifiedInviter(inviter, cb) {
       redisService.addQualifiedInviterToRank(inviter, ret.rank, _cb);
     },
     upload: (_cb, ret) => {
-      let group = Math.ceil(ret.rank / 100);
+      group = Math.ceil(ret.rank / 100);
       uploadImgWithToken(`./groupQrCode/${group}.jpg`, _cb);
     },
+    sendText: (_cb, ret) => {
+      let msgBody = {
+        touser: inviter, msgtype: "text",
+        text: { content: sprintf(constants.msgMap[group], ret.rank) }
+      };
+      sendCustomerMsgWithToken(msgBody, _cb);
+    },
     sendQrCode: (_cb, ret) => {
+      if (group > 1) return _cb();
       let msgBody = {
         touser: inviter, msgtype: "image",
         image: { media_id: ret.upload.media_id }
