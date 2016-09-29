@@ -46,11 +46,11 @@ exports.processInvitation = (inviterUser, invitee, cb) => {
     saveToRedis: (_cb, ret) => {
       redisService.addInvitee(inviter, invitee, _cb);
     },
-    sendGroupQrcode: (_cb, ret) => {
-      weixin.sendGroupQrcode(inviter, threshold, _cb);
-    },
     score: (_cb, ret) => {// 发送积分变动消息（模板消息）给其邀请者
       weixin.sendScoreMessage(inviter, invitee, inviterUser, _cb);
+    },
+    sendGroupQrcode: (_cb, ret) => {
+      weixin.sendGroupQrcode(inviter, threshold, _cb);
     },
   }, cb);
 };
