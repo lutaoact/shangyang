@@ -41,7 +41,7 @@ exports.processInvitation = (inviterUser, invitee, cb) => {
     invitation: (_cb, ret) => {
       loggerD.write('[Invitation] Create Invitation:', '[Inviter]',
         inviter, '[Invitee]', invitee);
-      Invitation.create({inviter, invitee}, _cb);
+      Invitation.update({inviter, invitee}, {}, {upsert: true}, _cb);
     },
     saveToRedis: (_cb, ret) => {
       redisService.addInvitee(inviter, invitee, _cb);
