@@ -2,6 +2,12 @@
 
 const async = require('async');
 const _u = require('../common/util');
+const logger = _u.logger;
+const loggerD = _u.loggerD;
+const AppErr = require('./common/AppErr');
+
+const userService = _u.service('user');
+const User = _u.model('User');
 
 let messages = [
   { "EventKey" : "", "FromUserName" : "o0zx1s2EHUGDVNMe3ob_p4I1Jdwo" },
@@ -37,6 +43,7 @@ function processMessage2(message, cb) {
 }
 
 function processMessage(message, cb) {
+  console.log('message:', message);
   let openid = message.FromUserName;
   let inviterIncrId = '';
   _u.mySeries({
@@ -65,10 +72,10 @@ function processMessage(message, cb) {
         return _cb();
       }
       //如果不是新用户，似乎没啥好说的，啥都不做了吧
-      if (!ret.user.isNewCreated) {
-        loggerD.write('[Recv] Old User Subscribe:', '[From]', openid);
-        return _cb();
-      }
+//      if (!ret.user.isNewCreated) {
+//        loggerD.write('[Recv] Old User Subscribe:', '[From]', openid);
+//        return _cb();
+//      }
 
       loggerD.write('invitation', inviterIncrId, ret.user.incrId, openid);
       loggerD.write('[Recv] Invitation Subscribe:', '[From]', openid, '[InviterIncrId]', inviterIncrId);
