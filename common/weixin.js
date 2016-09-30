@@ -166,7 +166,6 @@ function getHeadImg(url, openid, cb) {
 }
 
 function processQualifiedInviter(inviter, cb) {
-  let group = '';
   _u.mySeries({
     rank: (_cb) => {
       redisService.getNextQualifiedRank(_cb);
@@ -174,21 +173,38 @@ function processQualifiedInviter(inviter, cb) {
     addQualifiedInviterToRank: (_cb, ret) => {
       redisService.addQualifiedInviterToRank(inviter, ret.rank, _cb);
     },
-    upload: (_cb, ret) => {
-      group = Math.ceil(ret.rank / 100);
-      uploadImgWithToken(`./groupQrCode/${group}.jpg`, _cb);
+    sendMsg: (_cb, ret) => {
+      sendMsgToQualifiedInviter(inviter, ret.rank, _cb);
     },
+  }, cb);
+}
+
+function sendMsgToQualifiedInviter(openid, rank, cb) {
+  let term = Math.ceil(rank / 100);
+  let group = Math.ceil((rank % 100) / 10);
+  _u.mySeries({
     sendText: (_cb, ret) => {
       let msgBody = {
-        touser: inviter, msgtype: "text",
-        text: { content: sprintf(constants.msgMap[group], ret.rank) }
+        touser: openid, msgtype: "text",
+        text: { content: sprintf(constants.msgMap[term], rank) }
       };
       sendCustomerMsgWithToken(msgBody, _cb);
     },
     sendQrCode: (_cb, ret) => {
-      if (group > 1) return _cb();
+      if (term > 1) return _cb();
+      sendImage(openid, `./groupQrCode/${group}.jpg`, _cb);
+    },
+  }, cb);
+}
+
+function sendImage(openid, imgPath, cb) {
+  _u.mySeries({
+    upload: (_cb, ret) => {
+      uploadImgWithToken(imgPath, _cb);
+    },
+    sendQrCode: (_cb, ret) => {
       let msgBody = {
-        touser: inviter, msgtype: "image",
+        touser: openid, msgtype: "image",
         image: { media_id: ret.upload.media_id }
       };
       sendCustomerMsgWithToken(msgBody, _cb);
