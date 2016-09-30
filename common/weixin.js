@@ -271,6 +271,17 @@ function generateQrCodeForOneUser(token, user, cb) {
 }
 exports.generateQrCodeForOneUser = invokeWithToken(generateQrCodeForOneUser);
 
+//POST https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN
+function createMenu(token, menu, cb) {
+  let url = `${API_BASE}/menu/create?access_token=${token}`;
+  request.post({url, json: true, body: menu}, (err, response, resBody) => {
+    if (err) return _cb(err);
+    cb(null, resBody);
+  });
+}
+const createMenuWithToken = invokeWithToken(createMenu);
+exports.createMenuWithToken = createMenuWithToken;
+
 //POST: https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN
 function sendTemplateMessage(accessToken, openid, data, cb) {
   let options = {
