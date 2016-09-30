@@ -183,7 +183,7 @@ function processQualifiedInviter(inviter, cb) {
 }
 
 function sendMsgToQualifiedInviter(openid, rank, cb) {
-  loggerD.write('sendMsgToQualifiedInviter', openid, rank);
+  loggerD.write('sendMsgToQualifiedInviter', 'openid', openid, 'rank', rank);
   let term = Math.ceil(rank / 100);
   let group = Math.ceil((rank % 100) / 10);
   _u.mySeries({
@@ -202,7 +202,7 @@ function sendMsgToQualifiedInviter(openid, rank, cb) {
 }
 
 function sendImage(openid, imgPath, cb) {
-  loggerD.write('sendImage', openid, imgPath);
+  loggerD.write('sendImage', 'openid', openid, 'imgPath', imgPath);
   _u.mySeries({
     upload: (_cb, ret) => {
       uploadImgWithToken(imgPath, _cb);
