@@ -27,7 +27,7 @@ const QRCODE = {
 }
 
 const PORTRAIT = {
-  SRC: __dirname + '/example/portrait.png',
+  SRC: __dirname + '/default.jpg',
   RADIUS: 56
 }
 
