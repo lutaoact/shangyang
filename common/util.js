@@ -76,3 +76,11 @@ function genVerifyCode() {
   return Math.random().toString().substr(2, 4);
 }
 exports.genVerifyCode = genVerifyCode;
+
+exports.delayRun = (func) => {
+  return function(err, ret) {
+    setTimeout(function() {
+      func(err, ret);
+    }, 1000);
+  };
+};

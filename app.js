@@ -132,11 +132,8 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
   }, (err, ret) => {
     if (err) {
       logger.error(err);
-      return res.reply('');
     }
-
-    loggerD.write('[Send] Invitation QRCode:', '[To]', openid, '[MediaId]', ret.user.mediaId);
-    res.reply({type: "image", content: {mediaId: ret.user.mediaId}});
+    res.reply('');
   });
 }));
 

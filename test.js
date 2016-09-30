@@ -5,7 +5,14 @@ const weixin = require('./common/weixin');
 const userService = _u.service('user');
 const redisService = _u.service('redis');
 
-weixin.sendGroupQrcode('oSB10w52vUxOabF1FAPB13uyne8g', 2, console.log);
+function hello(cb) {
+  cb('123', '456');
+}
+
+hello(console.log);
+hello(_u.delayRun(console.log));
+
+//weixin.sendGroupQrcode('oSB10w52vUxOabF1FAPB13uyne8g', 2, console.log);
 
 //let token = '55o7tv65xEzXxsG0JXnv9BRjYuRExMantdQIEwfCPI0VtFGid03MojC2IPyMKd-uAKxod6ZbZa3CrnhrZeFMq94tXi_SIW7H4aQXTx_j7TtvCbpB7aP2hNVy-aPzhVKnEQIeABANZR';
 //let openid = 'oSB10wzOr2wcSSjuzcCqbakzZKuo';

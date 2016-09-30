@@ -66,6 +66,7 @@ function sendCustomerMsg(token, msgBody, cb) {
 }
 exports.sendCustomerMsg = invokeWithToken(sendCustomerMsg);
 const sendCustomerMsgWithToken = invokeWithToken(sendCustomerMsg);
+exports.sendCustomerMsgWithToken = invokeWithToken(sendCustomerMsg);
 //weixin.sendCustomerMsg(msgBody, console.log);
 
 // GET https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
