@@ -74,6 +74,7 @@ const wechatConfig = {
 };
 
 const userService = _u.service('user');
+const redisService = _u.service('redis');
 const Message = _u.model('Message');
 const User = _u.model('User');
 
@@ -84,6 +85,8 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
   Message.create({content: message}, console.log);//所有的消息都存一份，备用
 
   let openid = message.FromUserName;
+
+  redisService.addLatestAccess(openid, console.log);//最新访问时间
 
   //暂时只处理subscribe事件，后续可以再丰富
   if (message.Event !== 'subscribe') {

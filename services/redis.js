@@ -15,6 +15,11 @@ const redisKey = {
   inviter: (inviter) => { return `i:${inviter}`; },
   qualifiedRank: 'qr:2016-1',
   qualifiedTime: 'qt:2016-1',
+  latestAccess: 'la',
+};
+
+exports.addLatestAccess = (openid, cb) => {
+  dataRedis.zadd(redisKey.latestAccess, +moment(), openid, cb);
 };
 
 exports.addInvitee = (inviter, invitee, cb) => {
