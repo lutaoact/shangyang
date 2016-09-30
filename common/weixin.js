@@ -86,6 +86,9 @@ function getUserInfo(token, openid, cb) {
   let qs = {access_token: token, openid, lang: 'zh_CN'};
   request.get({url: userInfoUrl, qs, json: true}, (err, response, resBody) => {
     if (err) return cb(err);
+    if (resBody.errcode) {
+      return cb(null, {});
+    }
     cb(null, resBody);
   });
 }
@@ -248,6 +251,7 @@ function generateQrCodeForOneUser(token, user, cb) {
       showQrcode(ret.qrcode.ticket, openid, _cb);
     },
     getHeadImg: (_cb, ret) => {
+      if (!user.info.headimgurl) return _cb();
       getHeadImg(user.info.headimgurl, openid, _cb);
     },
     composePath: (_cb, ret) => {
