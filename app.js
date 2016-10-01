@@ -69,8 +69,8 @@ app.use('/api', require('./routes/api'));
 const wechatConfig = {
   token: 'weixin',
   appid: process.env.APPID,
-  // encodingAESKey: 'wmYBjHcEYQmRC0aPMJ556u5oAdpYD5NIlPMijX72hKY'
-  encodingAESKey: 'J64fqLqWiiWc11gybKlMsJjoFox6euM4j1wsbhcGBC9'
+  encodingAESKey: 'wmYBjHcEYQmRC0aPMJ556u5oAdpYD5NIlPMijX72hKY'
+  //encodingAESKey: 'J64fqLqWiiWc11gybKlMsJjoFox6euM4j1wsbhcGBC9'
 };
 
 const userService = _u.service('user');
