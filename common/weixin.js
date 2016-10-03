@@ -184,8 +184,9 @@ function processQualifiedInviter(inviter, cb) {
 
 function sendMsgToQualifiedInviter(openid, rank, cb) {
   loggerD.write('sendMsgToQualifiedInviter', 'openid', openid, 'rank', rank);
-  let term = Math.ceil(rank / 100);
-  let group = Math.ceil((rank % 100) / 10);
+  // let term = Math.ceil(rank / 100);
+  // let group = Math.ceil((rank % 100) / 10);
+  let term = 2;
   _u.mySeries({
     sendText: (_cb, ret) => {
       let msgBody = {

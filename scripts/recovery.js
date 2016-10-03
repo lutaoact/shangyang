@@ -17,23 +17,26 @@ let messages = [
 //  { "EventKey" : "", "FromUserName" : "o0zx1sxO2dkw7_5hfOVUHTcgGBsA" },
 //  { "EventKey" : "qrscene_52", "FromUserName" : "o0zx1s8oHPRWN4gcQPXtP8tGeAr8" },
 //  { "EventKey" : "", "FromUserName" : "o0zx1s9Inst4X_FoQWu6XhPyk7oU" },
-  { "EventKey" : "", "FromUserName" : "o0zx1s9Kj7v6RzVUFnRk0m5wPuKE" },//问题
+//  { "EventKey" : "", "FromUserName" : "o0zx1s9Kj7v6RzVUFnRk0m5wPuKE" },//问题
 //  { "EventKey" : "", "FromUserName" : "o0zx1syKzlgUKh34grllBy6ZkHcc" },
 //  { "EventKey" : "", "FromUserName" : "o0zx1s1UXWZDq_natUv65DAcPI80" },
 //  { "EventKey" : "", "FromUserName" : "o0zx1syj3CX9Ksi3_v6vwnn76eH8" },
 //  { "EventKey" : "qrscene_6", "FromUserName" : "o0zx1s8Ms4CDjaq0MXDjSMJk-Zuk" },
 //  { "EventKey" : "", "FromUserName" : "o0zx1s5eitssg6yXAUz5i91_wDUY" },
 //  { "EventKey" : "", "FromUserName" : "o0zx1s3GgnIVSk4viIS8KTrDllZ4" },
-  { "EventKey" : "qrscene_52", "FromUserName" : "o0zx1sxIJucXW-RtQGeU3rQChroQ" },//问题
+//  { "EventKey" : "qrscene_52", "FromUserName" : "o0zx1sxIJucXW-RtQGeU3rQChroQ" },//问题
 //  { "EventKey" : "qrscene_52", "FromUserName" : "o0zx1szw6nMhwRUA3R_8oYq2hNnA" },
 //  { "EventKey" : "", "FromUserName" : "o0zx1s4fi3putkis9PPQd3_yCunE" },
 //  { "EventKey" : "qrscene_14", "FromUserName" : "o0zx1s3tSGL0esTXmhmM8QyEfZ7Y" },
 //  { "EventKey" : "qrscene_52", "FromUserName" : "o0zx1s1N3ArUT37n_fFrYvKTUhBg" },
-//  { "EventKey" : "qrscene_4", "FromUserName" : "o0zx1s8aluBc2a7t6rgJqaZ2Mn6s" },
-//  { "EventKey" : "", "FromUserName" : "o0zx1s--ItfBjEqads1MVXUNv1Tw" },
-//  { "EventKey" : "", "FromUserName" : "o0zx1s11oXt3TwgTN6MGVhBR1Nno" },
-//  { "EventKey" : "", "FromUserName" : "o0zx1s8lu14x5FkbEp6dwtrqOMj4" },
-];
+//{ "EventKey" : "qrscene_298", "FromUserName" : "o0zx1syxzou1xOimlsTeFZQKE280" }
+//{ "EventKey" : "qrscene_344", "FromUserName" : "o0zx1s1KjEfO67J8vg1fBDENohug" },
+//{ "EventKey" : "qrscene_344", "FromUserName" : "o0zx1s40XF0qftN_2KXM4yNb-hs8" },
+{ "EventKey" : "", "FromUserName" : "o0zx1sypHB5Ozm_ozriR1IT5DqJI" },
+{ "EventKey" : "", "FromUserName" : "o0zx1s2OYJUd8mSFtAaGMGuzEezY" },
+//
+
+]
 //messages = [
 //  { "EventKey" : "", "FromUserName" : "o0zx1s6tzedzy_-9YbrBIXf7leQ8" },
 //];
