@@ -242,6 +242,7 @@ function sendImage(openid, imgPath, cb) {
     },
   }, cb);
 }
+export.sendImage = sendImage;
 
 function processInviterWithEnoughScore(inviter, cb) {
   _u.mySeries({
