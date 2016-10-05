@@ -28,7 +28,7 @@ function sendMsg(FSceneId, cb) {
       weixin.createForeverQrcode(FSceneId, _cb);
     },
     qrcodePngPath: (_cb, ret) => {
-      showQrcode(ret.qrcode.ticket, FSceneId, _cb);
+      weixin.showQrcode(ret.qrcode.ticket, FSceneId, _cb);
     },
     // sendText: (_cb, ret) => {
     //   let msgBody = {
