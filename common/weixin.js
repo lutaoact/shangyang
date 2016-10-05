@@ -114,6 +114,25 @@ function createQrcode(accessToken, incrId, cb) {
 }
 exports.createQrcode = createQrcode;
 
+// POST https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKEN
+// {"action_name": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": "123"}}}
+function createForeverQrcode(accessToken, sceneStr, cb) {
+  let options = {
+    url: createQrcodeUrl, qs: {access_token: accessToken}, json: true,
+    body: {
+      action_name: 'QR_LIMIT_STR_SCENE',
+      action_info: {scene: {scene_str: sceneStr}},
+    },
+  };
+  logger.write('[Create Forever QRCode', options.body.action_info);
+
+  request.post(options, (err, response, resBody) => {
+    if (err) return cb(err);
+    cb(null, resBody);//{"ticket":"xxxx","url":"yyyy"}
+  });
+}
+exports.createForeverQrcode = invokeWithToken(createForeverQrcode);
+
 // GET https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=TICKET
 function showQrcode(ticket, openid, cb) {
   let url = `${showQrcodeUrl}?ticket=${encodeURIComponent(ticket)}`;
