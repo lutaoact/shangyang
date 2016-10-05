@@ -117,6 +117,7 @@ exports.createQrcode = createQrcode;
 // POST https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKEN
 // {"action_name": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": "123"}}}
 function createForeverQrcode(accessToken, sceneStr, cb) {
+  console.log(sceneStr)
   let options = {
     url: createQrcodeUrl, qs: {access_token: accessToken}, json: true,
     body: {

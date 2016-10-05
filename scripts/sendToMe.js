@@ -24,15 +24,23 @@ function sendMsg(FSceneId, cb) {
   console.log('openId:', openId);
   // let rank = 70;
   _u.mySeries({
-    createQrCode: (_cb) => {
-      weixin.createForeverQrcode('FScene_0');
+    qrcode: (_cb) => {
+      weixin.createForeverQrcode(FSceneId, _cb);
     },
     qrcodePngPath: (_cb, ret) => {
-      showQrcode(ret.qrcode.ticket, 'FScene_0', _cb);
+      showQrcode(ret.qrcode.ticket, FSceneId, _cb);
     },
-    // sendMsg: (_cb) => {
-    //   weixin.sendMsgToQualifiedInviter(openId, ret.rank, _cb);
+    // sendText: (_cb, ret) => {
+    //   let msgBody = {
+    //     touser: openid, msgtype: "text",
+    //     text: { content: sprintf(constants.msgMap[term], rank) }
+    //   };
+    //   sendCustomerMsgWithToken(msgBody, _cb);
     // },
+    sendQrCode: (_cb, ret) => {
+      // if (term > 2) return _cb();
+      sendImage(openId, `./static/${FSceneId}.png`, _cb);
+    },
   }, _u.delayRun(cb));
 }
 
