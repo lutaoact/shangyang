@@ -73,8 +73,10 @@ exports.sendCustomerMsgWithToken = invokeWithToken(sendCustomerMsg);
 function getAccessToken(cb) {
   let qs = {grant_type: 'client_credential', appid: APPID, secret: APPSECRET};
   cache.get('weixinAccessToken', (_cb) => {
+    console.log('[get weixin access token]:');
     request.get({url: tokenUrl, qs, json: true}, (err, response, resBody) => {
       if (err) return _cb(err);
+      console.log(resBody.access_token);
       _cb(null, resBody.access_token);
     });
   }, cb);
@@ -196,8 +198,8 @@ function sendMsgToQualifiedInviter(openid, rank, cb) {
       sendCustomerMsgWithToken(msgBody, _cb);
     },
     sendQrCode: (_cb, ret) => {
-      if (term > 1) return _cb();
-      sendImage(openid, `./groupQrCode/${group}.jpg`, _cb);
+      if (term > 2) return _cb();
+      sendImage(openid, `./groupQrCode/term2.jpg`, _cb);
     },
   }, cb);
 }
@@ -254,10 +256,13 @@ function generateQrCodeForOneUser(token, user, cb) {
       showQrcode(ret.qrcode.ticket, openid, _cb);
     },
     getHeadImg: (_cb, ret) => {
+      console.log(user);
       if (!user.info.headimgurl) return _cb();
       getHeadImg(user.info.headimgurl, openid, _cb);
     },
     composePath: (_cb, ret) => {
+      console.log(ret.qrcodePngPath);
+      console.log(ret.getHeadImg);
       const imgComposer = new ImageComposer();
       imgComposer.compose({
         qrcodeSrc: ret.qrcodePngPath,
