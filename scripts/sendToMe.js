@@ -14,7 +14,16 @@ const redisService = _u.service('redis');
 const openId = 'o0zx1s4KfSsw4yOo74g1o3P78DW4';
 
 const FSceneIds = [
-  'FScene_0'
+  'FScene_0',
+  'FScene_1',
+  'FScene_2',
+  'FScene_3',
+  'FScene_4',
+  'FScene_5',
+  'FScene_6',
+  'FScene_7',
+  'FScene_8',
+  'FScene_9',
 ];
 
 async.eachSeries(FSceneIds, sendMsg, console.log);
@@ -41,6 +50,6 @@ function sendMsg(FSceneId, cb) {
       // if (term > 2) return _cb();
       weixin.sendImage(openId, `./static/${FSceneId}.png`, _cb);
     },
-  }, _u.delayRun(cb));
+  }, _u.delayRun(cb, 2000));
 }
 

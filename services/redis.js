@@ -27,6 +27,10 @@ exports.addInvitee = (inviter, invitee, cb) => {
   dataRedis.zadd(key, +moment(), invitee, cb);
 };
 
+exports.addFQRCodeSubsribe = (openid, sceneId, cb) => {
+  dataRedis.zadd('FScene_'+sceneId, +moment(), openid, cb);
+};
+
 exports.getInviterScore = (inviter, cb) => {
   let key = redisKey.inviter(inviter);
   dataRedis.zcard(key, cb);

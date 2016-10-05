@@ -105,7 +105,9 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
       // 永久二维码
       // qrscene_FScene_${Id}
       if (message.EventKey.indexOf('qrscene_FScene_') !==  -1) {
-        console.log(message.EventKey);
+        let sceneId = +message.EventKey.replace(/^qrscene_FScene_/, '');
+        loggerD.write('[Subscribe] Foreve QRCode:', '[From]', openid, '[SceneId]', sceneId);
+        redisService.addFQRCodeSubsribe(openid, sceneId, console.log);
         return _cb();
       }
       inviterIncrId = +message.EventKey.replace(/^qrscene_/, '');

@@ -77,7 +77,8 @@ function genVerifyCode() {
 }
 exports.genVerifyCode = genVerifyCode;
 
-exports.delayRun = (func) => {
+exports.delayRun = (func, timing) => {
+  timing = timing || 1000;
   return function(err, ret) {
     setTimeout(function() {
       func(err, ret);
