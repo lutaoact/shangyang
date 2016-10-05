@@ -13,7 +13,7 @@ const redisService = _u.service('redis');
 
 const openId = 'o0zx1s4KfSsw4yOo74g1o3P78DW4';
 
-FSceneIds = [
+const FSceneIds = [
   'FScene_0'
 ];
 
@@ -21,7 +21,6 @@ async.eachSeries(FSceneIds, sendMsg, console.log);
 
 
 function sendMsg(FSceneId, cb) {
-  let openId = openId;
   console.log('openId:', openId);
   // let rank = 70;
   _u.mySeries({
