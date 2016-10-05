@@ -104,7 +104,7 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
       }
       // 永久二维码
       // qrscene_FScene_${Id}
-      if ('qrscene_FScene_'.indexOf(message.EventKey) !==  -1) {
+      if (message.EventKey.indexOf('qrscene_FScene_') !==  -1) {
         console.log(message.EventKey);
         return _cb();
       }
