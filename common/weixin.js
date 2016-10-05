@@ -204,6 +204,8 @@ function sendMsgToQualifiedInviter(openid, rank, cb) {
   }, cb);
 }
 
+exports.sendMsgToQualifiedInviter = sendMsgToQualifiedInviter;
+
 function sendImage(openid, imgPath, cb) {
   loggerD.write('sendImage', 'openid', openid, 'imgPath', imgPath);
   _u.mySeries({
