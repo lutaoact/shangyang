@@ -3,6 +3,7 @@
 const fs = require('fs');
 const Canvas = require('canvas')
 const Promise = require('bluebird')
+const clone = require('clone');
 
 const WIDTH = 400;
 const HEIGHT = 700;
@@ -32,9 +33,9 @@ const PORTRAIT = {
 }
 
 const ImageComposer = function (qrcode, portrait, background ) {
-  this.qrcode = qrcode || QRCODE;
-  this.portrait = portrait || PORTRAIT;
-  this.background = background || BACKGROUND;
+  this.qrcode = qrcode || clone(QRCODE);
+  this.portrait = portrait || clone(PORTRAIT);
+  this.background = background || clone(BACKGROUND);
   this.output = {};
   this.img = new Canvas.Image;
 
