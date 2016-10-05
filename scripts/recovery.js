@@ -30,10 +30,13 @@ let messages = [
 //  { "EventKey" : "qrscene_14", "FromUserName" : "o0zx1s3tSGL0esTXmhmM8QyEfZ7Y" },
 //  { "EventKey" : "qrscene_52", "FromUserName" : "o0zx1s1N3ArUT37n_fFrYvKTUhBg" },
 //{ "EventKey" : "qrscene_298", "FromUserName" : "o0zx1syxzou1xOimlsTeFZQKE280" }
-//{ "EventKey" : "qrscene_344", "FromUserName" : "o0zx1s1KjEfO67J8vg1fBDENohug" },
-//{ "EventKey" : "qrscene_344", "FromUserName" : "o0zx1s40XF0qftN_2KXM4yNb-hs8" },
-{ "EventKey" : "", "FromUserName" : "o0zx1sypHB5Ozm_ozriR1IT5DqJI" },
-{ "EventKey" : "", "FromUserName" : "o0zx1s2OYJUd8mSFtAaGMGuzEezY" },
+// { "EventKey" : "qrscene_70", "FromUserName" : "o0zx1s1ZNLWdkcObJRl2p3FdUqnk" }
+
+//{ "EventKey" : "", "FromUserName" : "o0zx1sxpWoJwZeTlGwzBeVvpcBNg" }
+//{ "EventKey" : "qrscene_376", "FromUserName" : "o0zx1s2zRUGKL5RpFD8SbwY-84qw" },
+{ "EventKey" : "", "FromUserName" : "o0zx1sy9JU0D3VUSdRarxdAtOTVw" }
+
+
 //
 
 ]
