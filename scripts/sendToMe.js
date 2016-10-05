@@ -39,7 +39,7 @@ function sendMsg(FSceneId, cb) {
     // },
     sendQrCode: (_cb, ret) => {
       // if (term > 2) return _cb();
-      sendImage(openId, `./static/${FSceneId}.png`, _cb);
+      weixin.sendImage(openId, `./static/${FSceneId}.png`, _cb);
     },
   }, _u.delayRun(cb));
 }
