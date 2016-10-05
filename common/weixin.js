@@ -124,10 +124,11 @@ function createForeverQrcode(accessToken, sceneStr, cb) {
       action_info: {scene: {scene_str: sceneStr}},
     },
   };
-  logger.write('[Create Forever QRCode', options.body.action_info);
+  loggerD.write('[Create Forever QRCode', options.body.action_info);
 
   request.post(options, (err, response, resBody) => {
     if (err) return cb(err);
+    console.log(resBody)
     cb(null, resBody);//{"ticket":"xxxx","url":"yyyy"}
   });
 }
