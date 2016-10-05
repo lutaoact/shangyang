@@ -102,6 +102,12 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
         loggerD.write('[Recv] No Invitation Subscribe:', '[From]', openid);
         return _cb();
       }
+      // 永久二维码
+      // qrscene_FScene_${Id}
+      if ('qrscene_FScene_'.indexOf(message.EventKey) !==  -1) {
+        console.log(message.EventKey);
+        return _cb();
+      }
       inviterIncrId = +message.EventKey.replace(/^qrscene_/, '');
       User.findOne({incrId: inviterIncrId}, _cb);
     },
