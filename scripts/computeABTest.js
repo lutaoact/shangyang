@@ -29,6 +29,7 @@ function getMessage(cb) {
       for (let i=0; i<noInviteMessage.length; i++) {
         let userId = noInviteMessage[i].content.FromUserName;
         // console.log(userId);
+        // );
       }
       _cb(null, ret);
     }
@@ -36,6 +37,6 @@ function getMessage(cb) {
 };
 
 getMessage((err, ret) => {
-  console.log(ret.allMessage.length);
+
   console.log(ret.users);
 })
