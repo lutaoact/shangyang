@@ -27,13 +27,16 @@ function getMessage(cb) {
       userService.getAllUsers({}, 'openid incrId threshold', _cb);
     },
     threshold: (_cb, ret) => {
+      let noInvitation = {};
       for (let i = 0; i < ret.noInviteMessage.length; i++) {
         let userId = ret.noInviteMessage[i].content.FromUserName;
-        // console.log(userId);
+       // console.log(userId);
         // );
-        let userInfo = _u.getObjFromArrByKeyName(ret.users, userId, 'openid');
-        console.log(userInfo)
+        let threshold = _u.getObjFromArrByKeyName(ret.users, userId, 'openid')['threshold'];
+        noInvitation[threshold] ? noInvitation[threshold]++ : noInvitation[threshold] = 1;
       }
+      console.log(noInvitation)
+      //console.log(ret.users);
       _cb(null, ret);
     }
   },cb);
