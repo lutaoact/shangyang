@@ -15,16 +15,23 @@ const openId = 'o0zx1s4KfSsw4yOo74g1o3P78DW4';
 
 function getMessage(cb) {
   _u.mySeries({
-    allMessage: (_cb) => {
-      messageService.getSubscribeMessage(null, _cb);
+    noInviteMessage: (_cb) => {
+      messageService.getSubscribeMessage({invitation: false}, _cb);
     },
     inviteMessage: (_cb, ret) => {
       messageService.getSubscribeMessage({invitation: true}, _cb);
     },
+    threshold: (_cb, ret) => {
+      for (let i=0; i<noInviteMessage.length; i++) {
+        let userId = noInviteMessage[i].content.FromUserName;
+        console.log(userId);
+      }
+      _cb(null, ret);
+    }
   },cb);
 };
 
 getMessage((err, ret) => {
-    console.log(ret.allMessage.length);
-    console.log(ret.inviteMessage.length);
+  console.log(ret.allMessage.length);
+  console.log(ret.inviteMessage.length);
 })
