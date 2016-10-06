@@ -24,6 +24,7 @@
     "async": "1.5.2",
     "body-parser": "1.14.2",
     "cheerio": "0.20.0",
+    "clone": "^2.0.0",
     "composable-middleware": "0.3.0",
     "config": "1.19.0",
     "cookie-parser": "1.4.1",

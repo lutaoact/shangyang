@@ -26,7 +26,7 @@ function getSubscribeMessage(opt, cb) {
   }
   // 返回所有关注消息
   else {
-    Message.find({'content.Event':'subscribe'}, {'FromUserName'}, function(err, messages) {
+    Message.find({'content.Event':'subscribe'}, 'content.FromUserName', function(err, messages) {
       cb(messages);
     });
   }
