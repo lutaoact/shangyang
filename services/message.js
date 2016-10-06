@@ -18,11 +18,16 @@ const redisService = _u.service('redis');
 function getSubscribeMessage(opt, cb) {
   // 返回所有被邀请关注的消息
   if (opt && opt.invitation) {
-
+    Message.find({'content.Event':'subscribe', 'content.EventKey': /qrscene_/i},
+      'content.FromUserName EventKey', function(err, messages) {
+      cb(messages);
+    });
   }
   // 返回所有没有被邀请的关注消息
   else if (opt && !opt.invitation) {
-
+    Message.find({'content.Event':'subscribe', 'content.EventKey': ''}, 'content.FromUserName', function(err, messages) {
+      cb(messages);
+    });
   }
   // 返回所有关注消息
   else {

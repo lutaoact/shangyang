@@ -13,5 +13,12 @@ const redisService = _u.service('redis');
 
 const openId = 'o0zx1s4KfSsw4yOo74g1o3P78DW4';
 
-messageService.getSubscribeMessage(null, console.log);
 
+_u.mySeries({
+  allMessage: (_cb) => {
+    messageService.getSubscribeMessage(null, console.log);
+  },
+  inviteMessage: (_cb, ret) => {
+    messageService.getSubscribeMessage({invitation: true}, console.log);
+  },
+}, cb);
