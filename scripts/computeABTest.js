@@ -7,6 +7,7 @@ const loggerD = _u.loggerD;
 const AppErr = require('../common/AppErr');
 
 const messageService = _u.service('message');
+const userService = _u.service('user');
 
 const weixin = require('../common/weixin');
 const redisService = _u.service('redis');
@@ -21,10 +22,13 @@ function getMessage(cb) {
     inviteMessage: (_cb, ret) => {
       messageService.getSubscribeMessage({invitation: true}, _cb);
     },
+    users: (_cb, ret) => {
+      userService.getAllUsers({}, 'openid incrId threshold', _cb);
+    },
     threshold: (_cb, ret) => {
       for (let i=0; i<noInviteMessage.length; i++) {
         let userId = noInviteMessage[i].content.FromUserName;
-        console.log(userId);
+        // console.log(userId);
       }
       _cb(null, ret);
     }
@@ -33,5 +37,5 @@ function getMessage(cb) {
 
 getMessage((err, ret) => {
   console.log(ret.allMessage.length);
-  console.log(ret.inviteMessage.length);
+  console.log(ret.users);
 })

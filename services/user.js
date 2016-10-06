@@ -34,6 +34,12 @@ function createOne(openid, inviterUser, cb) {
   });
 }
 
+exports.getAllUsers = (condition, fields, cb) => {
+  User.find(condition, fields, function(err, messages) {
+    cb(err, messages);
+  });
+};
+
 exports.processInvitation = (inviterUser, invitee, cb) => {
   let inviter   = inviterUser.openid;
   let threshold = inviterUser.threshold;
