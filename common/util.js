@@ -85,3 +85,10 @@ exports.delayRun = (func, timing) => {
     }, 1000);
   };
 };
+
+exports.getObjFromArrByKeyName = (arr, value, keyName) => {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].keyName === value) return arr[i];
+  }
+  return null;
+}

@@ -35,8 +35,8 @@ function createOne(openid, inviterUser, cb) {
 }
 
 exports.getAllUsers = (condition, fields, cb) => {
-  User.find(condition, fields, function(err, messages) {
-    cb(err, messages);
+  User.find(condition, fields, (err, users) => {
+    cb(err, users);
   });
 };
 

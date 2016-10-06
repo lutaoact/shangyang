@@ -14,6 +14,7 @@ const redisService = _u.service('redis');
 
 const openId = 'o0zx1s4KfSsw4yOo74g1o3P78DW4';
 
+
 function getMessage(cb) {
   _u.mySeries({
     noInviteMessage: (_cb) => {
@@ -26,10 +27,12 @@ function getMessage(cb) {
       userService.getAllUsers({}, 'openid incrId threshold', _cb);
     },
     threshold: (_cb, ret) => {
-      for (let i=0; i<noInviteMessage.length; i++) {
-        let userId = noInviteMessage[i].content.FromUserName;
+      for (let i = 0; i < ret.noInviteMessage.length; i++) {
+        let userId = ret.noInviteMessage[i].content.FromUserName;
         // console.log(userId);
         // );
+        let userInfo = _u.getObjFromArrByKeyName(ret.users, userId, 'openid');
+        console.log(userInfo)
       }
       _cb(null, ret);
     }
@@ -38,5 +41,5 @@ function getMessage(cb) {
 
 getMessage((err, ret) => {
 
-  console.log(ret.users);
+  console.log(ret.users.length);
 })
