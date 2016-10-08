@@ -44,6 +44,7 @@ function invokeWithToken(myFunc) {
         getAccessToken(_cb);
       },
       result: (_cb, ret) => {
+        console.log(ret.token);
         args.unshift(ret.token);
         args.push(_cb);
         myFunc.apply(null, args);
@@ -87,6 +88,7 @@ exports.getAccessToken = getAccessToken;
 function getUserInfo(token, openid, cb) {
   let qs = {access_token: token, openid, lang: 'zh_CN'};
   request.get({url: userInfoUrl, qs, json: true}, (err, response, resBody) => {
+    logger.error('userInfo', resBody);
     if (err) return cb(err);
     if (resBody.errcode) {
       return cb(null, {});

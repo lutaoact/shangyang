@@ -34,10 +34,12 @@ let messages = [
 
 //{ "EventKey" : "", "FromUserName" : "o0zx1sxpWoJwZeTlGwzBeVvpcBNg" }
 //{ "EventKey" : "qrscene_376", "FromUserName" : "o0zx1s2zRUGKL5RpFD8SbwY-84qw" },
-{ "EventKey" : "", "FromUserName" : "o0zx1sy9JU0D3VUSdRarxdAtOTVw" }
 
 
-//
+{ "EventKey" : "qrscene_534", "FromUserName" : "o0zx1s62rnPePArLrfh8fEd95KaY" },
+{ "EventKey" : "qrscene_534", "FromUserName" : "o0zx1s-vfPQrDhEY82-zAhkueDu0" }
+
+
 
 ]
 //messages = [

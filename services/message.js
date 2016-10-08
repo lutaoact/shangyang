@@ -18,7 +18,7 @@ const redisService = _u.service('redis');
 function getSubscribeMessage(opt, cb) {
   // 返回所有被邀请关注的消息
   if (opt && opt.invitation) {
-    Message.find({'content.Event':'subscribe', 'content.EventKey': /qrscene_/i},
+    Message.find({'content.Event':'subscribe', 'content.EventKey': /qrscene_[0-9]/i},
       'content.FromUserName content.EventKey', (err, messages) => {
       cb(err, messages);
     });
