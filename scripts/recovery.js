@@ -36,8 +36,9 @@ let messages = [
 //{ "EventKey" : "qrscene_376", "FromUserName" : "o0zx1s2zRUGKL5RpFD8SbwY-84qw" },
 
 
-{ "EventKey" : "qrscene_534", "FromUserName" : "o0zx1s62rnPePArLrfh8fEd95KaY" },
-{ "EventKey" : "qrscene_534", "FromUserName" : "o0zx1s-vfPQrDhEY82-zAhkueDu0" }
+{ "EventKey" : "", "FromUserName" : "o0zx1s8YQce_XqQtOINwt6w4caR0" }
+
+
 
 
 
