@@ -220,10 +220,10 @@ function sendMsgToQualifiedInviter(openid, rank, cb) {
       };
       sendCustomerMsgWithToken(msgBody, _cb);
     },
-    sendQrCode: (_cb, ret) => {
-      if (term > 2) return _cb();
-      sendImage(openid, `./groupQrCode/term2.jpg`, _cb);
-    },
+    // sendQrCode: (_cb, ret) => {
+    //   if (term > 2) return _cb();
+    //   sendImage(openid, `./groupQrCode/term2.jpg`, _cb);
+    // },
   }, cb);
 }
 
