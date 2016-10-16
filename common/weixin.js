@@ -336,6 +336,8 @@ function sendTemplateMessage(accessToken, openid, data, cb) {
   });
 }
 exports.sendTemplateMessage = sendTemplateMessage;
+exports.sendTemplateMessageWithToken = invokeWithToken(sendTemplateMessage);
+
 
 function sendScoreMessage(openid, inviteeid, inviterUser, cb) {
   _u.mySeries({
