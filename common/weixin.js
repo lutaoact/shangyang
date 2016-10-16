@@ -322,6 +322,7 @@ exports.createMenuWithToken = createMenuWithToken;
 
 //POST: https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN
 function sendTemplateMessage(accessToken, openid, data, cb, opt) {
+  console.log(opt)
   let templateId = opt && opt.templateId;
   let url = opt && opt.url;
   let options = {
