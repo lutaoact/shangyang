@@ -46,7 +46,7 @@ function sendMsg(openIdObj, cb) {
       loggerD.write('[Send Message]', "Term 3 Message openId" , openId, 'rank', ret.rank);
       // weixin.sendMsgToQualifiedInviter(openId, ret.rank, _cb);
       // weixin.sendImage(openId, `./groupQrCode/term2.jpg`, _cb);
-      let msg = '恭喜您获得免费参加第三期集训营的资格. 快快扫描上边二维码, 添加集训营营长Iris的微信吧, 她会邀请你加入集训营专属群~',
+      let msg = '恭喜您获得免费参加第三期集训营的资格. 快快扫描上边二维码, 添加集训营营长Iris的微信吧, 她会邀请你加入集训营专属群~';
       let msgBody = {
         touser: openId, msgtype: "text",
         text: { content: msg }
