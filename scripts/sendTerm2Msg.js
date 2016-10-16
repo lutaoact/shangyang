@@ -51,7 +51,7 @@ function sendMsg(openIdObj, cb) {
         touser: openId, msgtype: "text",
         text: { content: msg }
       };
-      sendCustomerMsgWithToken(msgBody, _cb);
+      weixin.sendCustomerMsgWithToken(msgBody, _cb);
     },
   }, _u.delayRun(cb));
 }
