@@ -45,7 +45,7 @@ function sendMsg(openIdObj, cb) {
       redisService.getQualifiedRank(openId, _cb);
     },
     userInfo: (_cb, ret) => {
-      weixin.getUserInfo(openid, _cb);
+      weixin.getUserInfo(openId, _cb);
     },
     sendMsg: (_cb, ret) => {
       // console.log(ret.rank);
