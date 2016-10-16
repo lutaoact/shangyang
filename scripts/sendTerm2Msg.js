@@ -12,16 +12,6 @@ const weixin = require('../common/weixin');
 const redisService = _u.service('redis');
 
 const openIds = [
-<<<<<<< HEAD
-  // {"id": "o0zx1syKzlgUKh34grllBy6ZkHcc"},
-  // {"id": "o0zx1sxpWoJwZeTlGwzBeVvpcBNg"},
-  // {"id": "o0zx1s9VkoIk4YoTxnr3VOLYyuUc"},
-  // {"id": "o0zx1s_BBc7aF9uM5OTDvnZJupeI"},
-  // {"id": "o0zx1swqwcOzZOwTur5tQBtnmx-c"},
-  // {"id": "o0zx1s__ELNLOIVWLm_JyuRAOIEI"},
-  // {"id": "o0zx1s0gQv8Hva5D8VcskwRzcOkI"},
-  // {"id": "o0zx1s3LCRIMAIDBX755zv4R3D3Y"},
-  // {"id":"o0zx1sxqDA-nkvz9_wr-PxxcqXuU"}
 {"id": "o0zx1s7gMqY9MSfcpXZDRUyhqWkU"},
 {"id": "o0zx1s_knfht-4jFkOmYHg3uHTgc"},
 {"id": "o0zx1s9JiPDdh0WN4ht2gsCfJzjo"},
