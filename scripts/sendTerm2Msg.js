@@ -43,10 +43,13 @@ function sendMsg(openIdObj, cb) {
   _u.mySeries({
     rank: (_cb) => {
       redisService.getQualifiedRank(openId, _cb);
-
+    },
+    userInfo: (_cb, ret) => {
+      getUserInfo(ret.token, openid, _cb);
     },
     sendMsg: (_cb, ret) => {
-      console.log(ret.rank);
+      // console.log(ret.rank);
+      console.log(ret.userInfo);
       loggerD.write('[Send News Message]', "Term 3 Message openId" , openId, 'rank', ret.rank);
       // weixin.sendMsgToQualifiedInviter(openId, ret.rank, _cb);
 
@@ -70,7 +73,7 @@ function sendMsg(openIdObj, cb) {
           color: ''
         },
         keyword1: {
-          value: ret.invitee.nickname,
+          value: ret.userInfo.nickname,
           color: ''
         },
         keyword2: {
