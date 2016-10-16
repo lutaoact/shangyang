@@ -32,14 +32,14 @@ function getMessage(cb) {
         let incrId = +value.content.EventKey.replace(/^qrscene_/, '');
         let userInfo = _u.getObjFromArrByKeyName(ret.users, incrId, 'incrId');
         return {
-          incrId: userInfo.incrId,
+          incrId: userInfo ? userInfo.incrId : 0,
           threshold: userInfo ? userInfo.threshold : -1,
         }
       }).filter((value) => {
         let no = ret.noInviteMessage.map((value2) => {
           let openId = value2.content.FromUserName;
           let userInfo = _u.getObjFromArrByKeyName(ret.users, openId, 'openid');
-          return userInfo.incrId;
+          return userInfo ? userInfo.incrId : 0;
         });
         return no.indexOf(value.incrId) !== -1;
       }).reduce((pre, cur) => {
@@ -89,8 +89,15 @@ function getMessage(cb) {
       let N1 = {};
       for (let i = 0; i < ret.noInviteMessage.length; i++) {
         let userId = ret.noInviteMessage[i].content.FromUserName;
-        let threshold = _u.getObjFromArrByKeyName(ret.users, userId, 'openid')['threshold'];
-        N1[threshold] ? N1[threshold]++ : N1[threshold] = 1;
+        let user = _u.getObjFromArrByKeyName(ret.users, userId, 'openid');
+        if (user) {
+          let threshold = user['threshold'];
+          N1[threshold] ? N1[threshold]++ : N1[threshold] = 1;
+        }
+        else {
+          console.log(user);
+          console.log('----')
+        }
       }
       _cb(null, N1);
     },
