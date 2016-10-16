@@ -14,7 +14,7 @@ const redisService = _u.service('redis');
 const moment = require('moment');
 
 const templateId = 'eLHxc-wK89kjyc2rHDHXCnrPECB4XNqCBJ5q7PU3ytM';
-const newUrl = 'https://mp.weixin.qq.com/s?__biz=MzAxMDgwNDk0Nw==&mid=100000069&idx=1&sn=9d904d6526c1c14b6bbe7439d6cbf85b&chksm=1b4b8af92c3c03efe8c353c841730c01cb5e0098c93c8de7532bf3bafc8fd6c14ba5e05df82e&mpshare=1&scene=1&srcid=1016BizbJ08rtX1uKK4Tpmm7&pass_ticket=BwSoYubdtPTEHVJZSvcQPYkEeCQsESxjy8691i4sbHvfM4fxCUCzwdQFKpyP7my1#rd';
+const newsUrl = 'https://mp.weixin.qq.com/s?__biz=MzAxMDgwNDk0Nw==&mid=100000069&idx=1&sn=9d904d6526c1c14b6bbe7439d6cbf85b&chksm=1b4b8af92c3c03efe8c353c841730c01cb5e0098c93c8de7532bf3bafc8fd6c14ba5e05df82e&mpshare=1&scene=1&srcid=1016BizbJ08rtX1uKK4Tpmm7&pass_ticket=BwSoYubdtPTEHVJZSvcQPYkEeCQsESxjy8691i4sbHvfM4fxCUCzwdQFKpyP7my1#rd';
 const openIds = [
 // {"id": "o0zx1s7gMqY9MSfcpXZDRUyhqWkU"},
 // {"id": "o0zx1s_knfht-4jFkOmYHg3uHTgc"},
@@ -87,7 +87,7 @@ function sendMsg(openIdObj, cb) {
         }
       },  _cb, {
         templateId: templateId,
-        url: url
+        url: newsUrl
       });
     },
   }, _u.delayRun(cb));
