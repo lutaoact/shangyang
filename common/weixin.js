@@ -321,7 +321,7 @@ const createMenuWithToken = invokeWithToken(createMenu);
 exports.createMenuWithToken = createMenuWithToken;
 
 //POST: https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN
-function sendTemplateMessage(accessToken, openid, data, cb, opt) {
+function sendTemplateMessage(accessToken, openid, data, opt, cb) {
   console.log(opt)
   let templateId = opt && opt.templateId;
   let url = opt && opt.url;
@@ -396,7 +396,7 @@ function sendScoreMessage(openid, inviteeid, inviterUser, cb) {
           value: '影响力积累到' + inviterUser.threshold + '即可免费抱团学习', // threshold
           color: ''
         }
-      },  _cb);
+      }, {}, _cb);
       loggerD.write('[Send Message] Score Template:', '[To]', openid,
         '[Invitee]', inviteeid, '[Score]', ret.inviterScore);
     }
