@@ -32,7 +32,7 @@ const userInfoUrl = `${API_BASE}/user/info`;
 const templateMsgSendUrl = `${API_BASE}/message/template/send`;
 
 // const templateId = 'EMU7DdpXcA-msQkLLwp2R1oZINryZi-uJ9XwpDjvHkI';
-const templateId = 'eLHxc-wK89kjyc2rHDHXCnrPECB4XNqCBJ5q7PU3ytM';
+const defaultTemplateId = 'eLHxc-wK89kjyc2rHDHXCnrPECB4XNqCBJ5q7PU3ytM';
 
 function invokeWithToken(myFunc) {
   return function() {
@@ -321,12 +321,15 @@ const createMenuWithToken = invokeWithToken(createMenu);
 exports.createMenuWithToken = createMenuWithToken;
 
 //POST: https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN
-function sendTemplateMessage(accessToken, openid, data, cb) {
+function sendTemplateMessage(accessToken, openid, data, cb, opt) {
+  let templateId = opt && opt.templateId;
+  let url = opt && opt.url;
   let options = {
     url: templateMsgSendUrl, qs: {access_token: accessToken}, json: true,
     body: {
       touser: openid,
-      template_id: templateId,
+      template_id: templateId ? templateId : defaultTemplateId,
+      url: url ? url : '',
       data: data
     },
   };

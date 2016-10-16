@@ -85,7 +85,10 @@ function sendMsg(openIdObj, cb) {
           value: '点击详情。添加集训营营长Iris的微信吧, 她会邀请你加入集训营专属群~',
           color: ''
         }
-      },  _cb);
+      },  _cb, {
+        templateId: templateId,
+        url: url
+      });
     },
   }, _u.delayRun(cb));
 }
