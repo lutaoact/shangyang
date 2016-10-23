@@ -18,7 +18,7 @@ const newsUrl = 'https://mp.weixin.qq.com/s?__biz=MzAxMDgwNDk0Nw==&mid=100000069
 const openIds = [
 {"id": "o0zx1s0ANCTL4EJjhQUkaXFC8LIA"},
 {"id": "o0zx1sxJoNOkuaimUYN4c5JXvst4"},
-
+{"id": "o0zx1s4KfSsw4yOo74g1o3P78DW4"},
 ];
 
 
@@ -59,7 +59,7 @@ function sendMsg(openIdObj, cb) {
       weixin.sendTemplateMessageWithToken(openId, {
 
         first: {
-          value: '第三期集训营报名提醒',
+          value: '第四期集训营报名提醒',
           color: ''
         },
         keyword1: {
