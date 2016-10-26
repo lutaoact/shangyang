@@ -52,12 +52,12 @@ exports.processInvitation = (inviterUser, invitee, cb) => {
     saveToRedis: (_cb, ret) => {
       redisService.addInvitee(inviter, invitee, _cb);
     },
-    score: (_cb, ret) => {// 发送积分变动消息（模板消息）给其邀请者
-      weixin.sendScoreMessage(inviter, invitee, inviterUser, _cb);
-    },
-    sendGroupQrcode: (_cb, ret) => {
-      weixin.sendGroupQrcode(inviter, threshold, _cb);
-    },
+//    score: (_cb, ret) => {// 发送积分变动消息（模板消息）给其邀请者
+//      weixin.sendScoreMessage(inviter, invitee, inviterUser, _cb);
+//    },
+//    sendGroupQrcode: (_cb, ret) => {
+//      weixin.sendGroupQrcode(inviter, threshold, _cb);
+//    },
   }, cb);
 };
 
@@ -96,7 +96,7 @@ exports.processSubscribe = (openid, inviterUser, cb) => {
     // 生成课程介绍以及报名方式
     welcome: (_cb, ret) => {
       ret.user.mediaId = ret.mediaId
-      sendWelcomMsg(ret.user, console.log);//利用客服接口发送欢迎消息，异步实现
+//      sendWelcomeMsg(ret.user, console.log);//利用客服接口发送欢迎消息，异步实现
       _cb();
     },
   }, (err, ret) => {
@@ -119,7 +119,7 @@ function updateMediaIdForUser(user, cb) {
 }
 exports.updateMediaIdForUser = updateMediaIdForUser;
 
-function sendWelcomMsg(user, cb) {
+function sendWelcomeMsg(user, cb) {
   let openid    = user.openid;
   let threshold = user.threshold;
   let mediaId   = user.mediaId;

@@ -106,7 +106,7 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
       // qrscene_FScene_${Id}
       if (message.EventKey.indexOf('qrscene_FScene_') !==  -1) {
         let sceneId = +message.EventKey.replace(/^qrscene_FScene_/, '');
-        loggerD.write('[Subscribe] Foreve QRCode:', '[From]', openid, '[SceneId]', sceneId);
+        loggerD.write('[Subscribe] Forever QRCode:', '[From]', openid, '[SceneId]', sceneId);
         redisService.addFQRCodeSubsribe(openid, sceneId, console.log);
         return _cb();
       }
@@ -142,7 +142,13 @@ app.use('/wechat', wechat(wechatConfig, (req, res, next) => {
     if (err) {
       logger.error(err);
     }
-    res.reply('');
+    res.reply([
+      '你好, 我叫Wind.',
+      '你也关心主动词汇的问题?',
+      '棒! ',
+      '你可以点击下边菜单了解我',
+      '欢迎留言跟我交流~',
+    ].join('\n\n'));
   });
 }));
 
